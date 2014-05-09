@@ -3,7 +3,7 @@
 A pure AngularJS responsive calendar directive
 
 # Demo
-
+http://twinssbc.github.io/AngularJS-ResponsiveCalendar/demo/
 
 # Usage
 
