@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="calendarDemoApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>AngularJS Responsive Calendar Demo</title>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/calendar.css"/>
+    <script src="http://cdn.staticfile.org/angular.js/1.2.10/angular.min.js"></script>
+    <script src="../src/calendar.js"></script>
+    <script src="calendarDemoCtrl.js"></script>
+</head>
+<body>
+<header class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">AngularJS Responsive Calendar</a>
+        </div>
+        <p class="navbar-text hidden-xs">A pure AngularJS responsive calendar directive</p>
+        <ul class="nav navbar-nav navbar-right hidden-xs">
+            <li><a href="http://twinssbc.github.io">View on GitHub</a></li>
+        </ul>
+    </div>
+</header>
+<section class="content" style="margin-top: 70px;">
+    <section class="container">
+        <section ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">
+            <div class="alert alert-success" ng-show="event">Event selected:{{event.startTime|date:
+                'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-class="{active:mode==='month'}"
+                        ng-click="changeMode('month')">
+                    Month
+                </button>
+                <button type="button" class="btn btn-default" ng-class="{active:mode==='week'}"
+                        ng-click="changeMode('week')">
+                    Week
+                </button>
+                <button type="button" class="btn btn-default" ng-class="{active:mode==='day'}"
+                        ng-click="changeMode('day')">
+                    Day
+                </button>
+            </div>
+            <div class="well well-sm">
+                <calendar calendar-mode="mode" event-source="eventSource"
+                          range-changed="reloadSource(startTime, endTime)"
+                          event-selected="onEventSelected(event)"></calendar>
+            </div>
+        </section>
+    </section>
+</section>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<div ng-switch="calendarMode">
+    <div class="row calendar-navbar">
+        <div class="nav-left col-xs-2">
+            <button type="button" class="btn btn-default btn-sm" ng-click="move(-1)"><i
+                    class="glyphicon glyphicon-chevron-left"></i></button>
+        </div>
+        <div class="calendar-header col-xs-8"><strong>{{title}}</strong></div>
+        <div class="nav-right col-xs-2">
+            <button type="button" class="btn btn-default btn-sm" ng-click="move(1)"><i
+                    class="glyphicon glyphicon-chevron-right"></i></button>
+        </div>
+    </div>
+    <dayview ng-switch-when="day"></dayview>
+    <monthview ng-switch-when="month"></monthview>
+    <weekview ng-switch-when="week"></weekview>
+</div>

@@ -1,0 +1,40 @@
+<div>
+    <table class="table table-bordered monthview-datetable monthview-datetable">
+        <thead>
+        <tr>
+            <th ng-show="showWeeks" class="calendar-week-column text-center">#</th>
+            <th ng-repeat="label in labels track by $index" class="text-center">
+                <small>{{label}}</small>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in rows track by $index">
+            <td ng-show="showWeeks" class="calendar-week-column text-center">
+                <small><em>{{ weekNumbers[$index] }}</em></small>
+            </td>
+            <td ng-repeat="dt in row track by dt.date" class="monthview-dateCell" ng-click="select(dt.date)"
+                ng-class="{'text-center':true, 'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
+                <div ng-class="{'text-muted':dt.secondary}">
+                    {{dt.label}}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-if="showEventDetail" class="event-detail-container">
+        <div class="scrollable" style="height: 200px">
+            <table class="table table-bordered table-striped table-fixed">
+                <tr ng-repeat="event in selectedDate.events" ng-if="selectedDate.events">
+                    <td ng-if="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
+                        -
+                        {{event.endTime|date: 'HH:mm'}}
+                    </td>
+                    <td ng-if="event.allDay" class="monthview-eventdetail-timecolumn">All day</td>
+                    <td class="event-detail" ng-click="eventSelected({event:event})">{{event.title}}</td>
+                </tr>
+                <tr ng-if="!selectedDate.events"><td class="no-event-label">No Events</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
