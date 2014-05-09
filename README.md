@@ -86,13 +86,13 @@ EventSource is an array of event object which contains at least below fields:
 If allDay is set to true, the startTime has to be as a UTC date which time is set to 0:00 AM, because in an allDay event, only the date is considered, the exact time or timezone doesn't matter.    
 For example, if an allDay event starting from 2014-05-09, then startTime is
 
-    var startTime = new Date(Date.UTC(2014, 4, 8);
+        var startTime = new Date(Date.UTC(2014, 4, 8);
 
 * endTime    
 If allDay is set to true, the startTime has to be as a UTC date which time is set to 0:00 AM, because in an allDay event, only the date is considered, the exact time or timezone doesn't matter.    
 For example, if an allDay event ending to 2014-05-10, then endTime is
 
-    var endTime = new Date(Date.UTC(2014, 4, 9);
+        var endTime = new Date(Date.UTC(2014, 4, 9);
 
 * allDay    
 Indicates the event is allDay event or regular event
