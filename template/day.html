@@ -7,8 +7,7 @@
             <table class="table table-bordered" style="height: 100%; margin-bottom: 0px">
                 <tbody>
                 <tr>
-                    <td class="calendar-cell" ng-class="{'calendar-event-wrap':allDayEvents}"
-                        ng-if="allDayEvents.length>0">
+                    <td class="calendar-cell" ng-class="{'calendar-event-wrap':allDayEvents}">
                         <div ng-repeat="displayEvent in allDayEvents" class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
                              ng-style="{top: 25*$index+'px',width: '100%',height:'25px'}">
