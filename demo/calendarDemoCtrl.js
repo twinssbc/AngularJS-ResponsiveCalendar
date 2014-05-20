@@ -24,6 +24,9 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
             var endTime;
             if (eventType === 0) {
                 startTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
+                if (endDay === startDay) {
+                    endDay += 1;
+                }
                 endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
                 events.push({
                     title: 'All Day - ' + i,

@@ -313,6 +313,9 @@ angular.module('ui.rCalendar', [])
                         len = eventSource ? eventSource.length : 0,
                         startTime = ctrl.range.startTime,
                         endTime = ctrl.range.endTime,
+                        timeZoneOffset = -new Date().getTimezoneOffset(),
+                        utcStartTime = new Date(startTime.getTime() + timeZoneOffset * 60 * 1000),
+                        utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60 * 1000),
                         rows = scope.rows,
                         oneDay = 24 * 3600 * 1000,
                         eps = 0.001;
@@ -321,23 +324,37 @@ angular.module('ui.rCalendar', [])
                         var event = eventSource[i];
                         var eventStartTime = new Date(event.startTime);
                         var eventEndTime = new Date(event.endTime);
+                        var st;
+                        var et;
 
-                        if (eventEndTime <= startTime || eventStartTime >= endTime) {
-                            continue;
+                        if (event.allDay) {
+                            if (eventEndTime <= utcStartTime || eventStartTime >= utcEndTime) {
+                                continue;
+                            } else {
+                                st = utcStartTime;
+                                et = utcEndTime;
+                            }
+                        } else {
+                            if (eventEndTime <= startTime || eventStartTime >= endTime) {
+                                continue;
+                            } else {
+                                st = startTime;
+                                et = endTime;
+                            }
                         }
 
                         var timeDifferenceStart;
-                        if (eventStartTime <= startTime) {
+                        if (eventStartTime <= st) {
                             timeDifferenceStart = 0;
                         } else {
-                            timeDifferenceStart = (eventStartTime - startTime) / oneDay;
+                            timeDifferenceStart = (eventStartTime - st) / oneDay;
                         }
 
                         var timeDifferenceEnd;
-                        if (eventEndTime >= endTime) {
-                            timeDifferenceEnd = (endTime - startTime) / oneDay;
+                        if (eventEndTime >= et) {
+                            timeDifferenceEnd = (et - st) / oneDay;
                         } else {
-                            timeDifferenceEnd = (eventEndTime - startTime) / oneDay;
+                            timeDifferenceEnd = (eventEndTime - st) / oneDay;
                         }
 
                         var index = Math.floor(timeDifferenceStart);
@@ -438,9 +455,13 @@ angular.module('ui.rCalendar', [])
                         scope.gutterWidth = gutterWidth;
                         if (allDayEventGutterWidth <= 0) {
                             scope.allDayEventGutterWidth = gutterWidth;
+                        } else {
+                            scope.allDayEventGutterWidth = 0;
                         }
                         if (normalEventGutterWidth <= 0) {
                             scope.normalGutterWidth = gutterWidth;
+                        } else {
+                            scope.normalGutterWidth = 0;
                         }
                     }
                 }
@@ -483,7 +504,7 @@ angular.module('ui.rCalendar', [])
                         len = eventSource ? eventSource.length : 0,
                         startTime = ctrl.range.startTime,
                         endTime = ctrl.range.endTime,
-                        timeZoneOffset = new Date().getTimezoneOffset(),
+                        timeZoneOffset = -new Date().getTimezoneOffset(),
                         utcStartTime = new Date(startTime.getTime() + timeZoneOffset * 60 * 1000),
                         utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60 * 1000),
                         rows = scope.rows,
@@ -502,7 +523,7 @@ angular.module('ui.rCalendar', [])
                         var eventEndTime = new Date(event.endTime);
 
                         if (event.allDay) {
-                            if (eventEndTime < utcStartTime || eventStartTime >= utcEndTime) {
+                            if (eventEndTime <= utcStartTime || eventStartTime >= utcEndTime) {
                                 continue;
                             } else {
                                 allDayEventInRange = true;
@@ -537,7 +558,7 @@ angular.module('ui.rCalendar', [])
                                 }
                             }
                         } else {
-                            if (eventEndTime < startTime || eventStartTime >= endTime) {
+                            if (eventEndTime <= startTime || eventStartTime >= endTime) {
                                 continue;
                             } else {
                                 normalEventInRange = true;
@@ -616,6 +637,10 @@ angular.module('ui.rCalendar', [])
                             ctrl.placeAllDayEvents(orderedAllDayEvents);
                         }
                     }
+
+                    $timeout(function () {
+                        updateScrollGutter();
+                    });
                 };
 
                 ctrl._refreshView = function () {
@@ -688,9 +713,13 @@ angular.module('ui.rCalendar', [])
                     if (gutterWidth > 0) {
                         if (allDayEventGutterWidth <= 0) {
                             scope.allDayEventGutterWidth = gutterWidth;
+                        } else {
+                            scope.allDayEventGutterWidth = 0;
                         }
                         if (normalEventGutterWidth <= 0) {
                             scope.normalGutterWidth = gutterWidth;
+                        } else {
+                            scope.normalGutterWidth = 0;
                         }
                     }
                 }
@@ -714,7 +743,7 @@ angular.module('ui.rCalendar', [])
                         len = eventSource ? eventSource.length : 0,
                         startTime = ctrl.range.startTime,
                         endTime = ctrl.range.endTime,
-                        timeZoneOffset = new Date().getTimezoneOffset(),
+                        timeZoneOffset = -new Date().getTimezoneOffset(),
                         utcStartTime = new Date(startTime.getTime() + timeZoneOffset * 60 * 1000),
                         utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60 * 1000),
                         rows = scope.rows,
@@ -730,7 +759,7 @@ angular.module('ui.rCalendar', [])
                         var eventEndTime = new Date(event.endTime);
 
                         if (event.allDay) {
-                            if (eventEndTime < utcStartTime || eventStartTime >= utcEndTime) {
+                            if (eventEndTime <= utcStartTime || eventStartTime >= utcEndTime) {
                                 continue;
                             } else {
                                 allDayEvents.push({
@@ -738,7 +767,7 @@ angular.module('ui.rCalendar', [])
                                 });
                             }
                         } else {
-                            if (eventEndTime < startTime || eventStartTime >= endTime) {
+                            if (eventEndTime <= startTime || eventStartTime >= endTime) {
                                 continue;
                             } else {
                                 normalEventInRange = true;
@@ -789,6 +818,10 @@ angular.module('ui.rCalendar', [])
                             ctrl.placeEvents(orderedEvents);
                         }
                     }
+
+                    $timeout(function () {
+                        updateScrollGutter();
+                    });
                 };
 
                 ctrl._refreshView = function () {
