@@ -71,9 +71,18 @@ The callback function triggered when the range or mode is changed if the queryMo
 
 * eventSelected    
 The callback function triggered when an event is clicked
+    <calendar ... event-selected="onEventSelected(event)"></calendar>
 
     $scope.onEventSelected = function (event) {
         console.log(event.title);
+    };
+
+* timeSelected
+The callback function triggered when a date is selected in the monthview
+    <calendar ... time-selected="on=TimeSelected(selectedTime)"></calendar>
+
+    $scope.onTimeSelected = function (selectedTime) {
+        console.log(event.selectedTime);
     };
 
 

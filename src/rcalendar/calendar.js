@@ -30,7 +30,12 @@ angular.module('ui.rCalendar', [])
         });
 
         $scope.calendarMode = $scope.calendarMode || calendarConfig.calendarMode;
-        self.currentCalendarDate = angular.isDefined($attrs.initDate) ? $scope.$parent.$eval($attrs.initDate) : new Date();
+        if (angular.isDefined($attrs.initDate)) {
+            self.currentCalendarDate = $scope.$parent.$eval($attrs.initDate);
+        }
+        if (!self.currentCalendarDate) {
+            self.currentCalendarDate = new Date();
+        }
 
         self.init = function (ngModelCtrl_) {
             ngModelCtrl = ngModelCtrl_;
@@ -193,7 +198,8 @@ angular.module('ui.rCalendar', [])
             scope: {
                 calendarMode: '=',
                 rangeChanged: '&',
-                eventSelected: '&'
+                eventSelected: '&',
+                timeSelected: '&'
             },
             require: ['calendar', '?^ngModel'],
             controller: 'CalendarController',
@@ -262,6 +268,10 @@ angular.module('ui.rCalendar', [])
                         } else {
                             ctrl.rangeChanged();
                         }
+
+                        if (scope.timeSelected) {
+                            scope.timeSelected({selectedTime: selectedDate});
+                        }
                     }
                 };
 
@@ -283,7 +293,7 @@ angular.module('ui.rCalendar', [])
                         scope.labels[j] = dateFilter(days[j].date, ctrl.formatDayHeader);
                     }
 
-                    var headerDate = new Date(year, month, date);
+                    var headerDate = new Date(year, month, 1);
                     scope.$parent.title = dateFilter(headerDate, ctrl.formatMonthTitle);
                     scope.rows = ctrl.split(days, 7);
 

@@ -24,7 +24,9 @@
         <table class="table table-bordered table-fixed">
             <tbody>
             <tr ng-repeat="tm in rows track by $index">
-                <td class="calendar-hour-column text-center">{{$index}}</td>
+                <td class="calendar-hour-column text-right">
+                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
+                </td>
                 <td class="calendar-cell">
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-if="tm.events">
                         <div ng-repeat="displayEvent in tm.events" class="calendar-event"
