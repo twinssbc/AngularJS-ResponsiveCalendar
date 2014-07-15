@@ -63,27 +63,30 @@ Default value: 'local'
 * rangeChanged    
 The callback function triggered when the range or mode is changed if the queryMode is set to 'remote'
 
-    $scope.rangeChanged = function (startTime, endTime) {
-        Events.query({startTime: startTime, endTime: endTime}, function(events){
-            $scope.eventSource=events;
-        });
-    };
+        $scope.rangeChanged = function (startTime, endTime) {
+            Events.query({startTime: startTime, endTime: endTime}, function(events){
+                $scope.eventSource=events;
+            });
+        };
 
 * eventSelected    
 The callback function triggered when an event is clicked
-    <calendar ... event-selected="onEventSelected(event)"></calendar>
 
-    $scope.onEventSelected = function (event) {
-        console.log(event.title);
-    };
+        <calendar ... event-selected="onEventSelected(event)"></calendar>
+    
+    
+        $scope.onEventSelected = function (event) {
+            console.log(event.title);
+        };
 
 * timeSelected
 The callback function triggered when a date is selected in the monthview
-    <calendar ... time-selected="on=TimeSelected(selectedTime)"></calendar>
 
-    $scope.onTimeSelected = function (selectedTime) {
-        console.log(event.selectedTime);
-    };
+        <calendar ... time-selected="onTimeSelected(selectedTime)"></calendar>
+        
+        $scope.onTimeSelected = function (selectedTime) {
+            console.log(event.selectedTime);
+        };
 
 
 # EventSource
