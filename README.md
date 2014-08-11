@@ -16,7 +16,7 @@ Load the necessary dependent files:
 
 Add the calendar module as a dependency to your application module:
 
-    var myAppModule = angular.module('MyApp', ['ui.responsiveCalendar'])
+    var myAppModule = angular.module('MyApp', ['ui.rCalendar'])
 
 Add the directive in the html page
 
