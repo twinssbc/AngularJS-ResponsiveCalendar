@@ -35,6 +35,9 @@ angular.module('ui.rCalendar', [])
         }
         if (!self.currentCalendarDate) {
             self.currentCalendarDate = new Date();
+            if ($attrs.ngModel && !$scope.$parent.$eval($attrs.ngModel)) {
+                $parse($attrs.ngModel).assign($scope.$parent, self.currentCalendarDate);
+            }
         }
 
         self.init = function (ngModelCtrl_) {
@@ -46,12 +49,25 @@ angular.module('ui.rCalendar', [])
         };
 
         self.render = function () {
+            if (ngModelCtrl.$modelValue) {
+                var date = new Date(ngModelCtrl.$modelValue),
+                    isValid = !isNaN(date);
+
+                if (isValid) {
+                    this.currentCalendarDate = date;
+                } else {
+                    $log.error('"ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                }
+                ngModelCtrl.$setValidity('date', isValid);
+            }
             this.refreshView();
         };
 
         self.refreshView = function () {
             if (this.mode) {
+                this.range = this._getRange(this.currentCalendarDate);
                 this._refreshView();
+                this.rangeChanged();
             }
         };
 
@@ -79,13 +95,11 @@ angular.module('ui.rCalendar', [])
                     self.currentCalendarDate = new Date(firstDayInNextMonth - 24 * 60 * 60 * 1000);
                 }
             }
-            self.rangeChanged();
+            ngModelCtrl.$setViewValue(self.currentCalendarDate);
+            self.refreshView();
         };
 
         self.rangeChanged = function () {
-            this.range = this._getRange(this.currentCalendarDate);
-            this.refreshView();
-
             if (self.queryMode === 'local') {
                 if (self.eventSource && self._onDataLoaded) {
                     self._onDataLoaded();
@@ -226,8 +240,10 @@ angular.module('ui.rCalendar', [])
             restrict: 'EA',
             replace: true,
             templateUrl: '../template/rcalendar/month.html',
-            require: '^calendar',
-            link: function (scope, element, attrs, ctrl) {
+            require: ['^calendar', '?^ngModel'],
+            link: function (scope, element, attrs, ctrls) {
+                var ctrl = ctrls[0],
+                    ngModelCtrl = ctrls[1];
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
 
@@ -263,8 +279,10 @@ angular.module('ui.rCalendar', [])
                         }
 
                         ctrl.currentCalendarDate = selectedDate;
+                        if (ngModelCtrl) {
+                            ngModelCtrl.$setViewValue(selectedDate);
+                        }
                         if (direction === 0) {
-                            ctrl.currentCalendarDate = selectedDate;
                             for (var row = 0; row < 6; row += 1) {
                                 for (var date = 0; date < 7; date += 1) {
                                     var selected = ctrl.compare(selectedDate, rows[row][date].date) === 0;
@@ -275,7 +293,7 @@ angular.module('ui.rCalendar', [])
                                 }
                             }
                         } else {
-                            ctrl.rangeChanged();
+                            ctrl.refreshView();
                         }
 
                         if (scope.timeSelected) {
@@ -444,7 +462,7 @@ angular.module('ui.rCalendar', [])
                     return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
                 }
 
-                ctrl.rangeChanged();
+                ctrl.refreshView();
             }
         };
     }])
@@ -703,7 +721,7 @@ angular.module('ui.rCalendar', [])
                     return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
                 }
 
-                ctrl.rangeChanged();
+                ctrl.refreshView();
             }
         };
     }])
@@ -865,7 +883,7 @@ angular.module('ui.rCalendar', [])
                     };
                 };
 
-                ctrl.rangeChanged();
+                ctrl.refreshView();
             }
         };
     }]);
