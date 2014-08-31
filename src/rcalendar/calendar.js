@@ -66,10 +66,19 @@ angular.module('ui.rCalendar', [])
 
         $scope.move = function (direction) {
             var step = self.mode.step,
-                year = self.currentCalendarDate.getFullYear() + direction * (step.years || 0),
-                month = self.currentCalendarDate.getMonth() + direction * (step.months || 0),
-                date = self.currentCalendarDate.getDate() + direction * (step.days || 0);
-            self.currentCalendarDate.setFullYear(year, month, date);
+                currentCalendarDate = self.currentCalendarDate,
+                year = currentCalendarDate.getFullYear() + direction * (step.years || 0),
+                month = currentCalendarDate.getMonth() + direction * (step.months || 0),
+                date = currentCalendarDate.getDate() + direction * (step.days || 0),
+                firstDayInNextMonth;
+
+            currentCalendarDate.setFullYear(year, month, date);
+            if ($scope.calendarMode === 'month') {
+                firstDayInNextMonth = new Date(year, month + 1, 1);
+                if (firstDayInNextMonth.getTime() <= currentCalendarDate.getTime()) {
+                    self.currentCalendarDate = new Date(firstDayInNextMonth - 24 * 60 * 60 * 1000);
+                }
+            }
             self.rangeChanged();
         };
 
