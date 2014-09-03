@@ -23,10 +23,7 @@ angular.module('ui.rCalendar', [])
         });
 
         $scope.$parent.$watch('eventSource', function (value) {
-            self.eventSource = value;
-            if (self._onDataLoaded) {
-                self._onDataLoaded();
-            }
+            self.onEventSourceChanged(value);
         });
 
         $scope.calendarMode = $scope.calendarMode || calendarConfig.calendarMode;
@@ -78,6 +75,13 @@ angular.module('ui.rCalendar', [])
                 arrays.push(arr.splice(0, size));
             }
             return arrays;
+        };
+
+        self.onEventSourceChanged = function (value) {
+            self.eventSource = value;
+            if (self._onDataLoaded) {
+                self._onDataLoaded();
+            }
         };
 
         $scope.move = function (direction) {
@@ -232,6 +236,10 @@ angular.module('ui.rCalendar', [])
                 if (ngModelCtrl) {
                     calendarCtrl.init(ngModelCtrl);
                 }
+
+                scope.$on('eventSourceChanged', function (event, value) {
+                    calendarCtrl.onEventSourceChanged(value);
+                });
             }
         };
     })
