@@ -22,10 +22,12 @@
     },
     "license": "MIT",
     "ignore": [
-        "demo/",
         "lib/",
         "css/",
         "src/",
-        "template/"
+        "template/",
+        ".jshintrc",
+        "gruntfile.js",
+        "package.json"
     ]
 }
