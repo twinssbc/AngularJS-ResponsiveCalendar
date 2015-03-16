@@ -8,11 +8,7 @@
     "description": "A pure AngularJS responsive calendar directive",
     "main": [
         "dist/css/calendar/calendar.css",
-        "dist/css/calendar.min.css",
-        "dist/js/calendar-tpls.js",
-        "dist/js/calendar-tpls.min.js",
-        "LICENSE.txt",
-        "README.md"
+        "dist/js/calendar-tpls.js"
     ],
     "keywords": [
         "angular",
@@ -27,6 +23,9 @@
     "license": "MIT",
     "ignore": [
         "demo",
-        "lib"
+        "lib",
+        "css",
+        "src",
+        "template"
     ]
 }
