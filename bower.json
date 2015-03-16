@@ -22,10 +22,10 @@
     },
     "license": "MIT",
     "ignore": [
-        "demo",
-        "lib",
-        "css",
-        "src",
-        "template"
+        "demo/",
+        "lib/",
+        "css/",
+        "src/",
+        "template/"
     ]
 }
