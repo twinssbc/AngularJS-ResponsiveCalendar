@@ -7,12 +7,15 @@ http://twinssbc.github.io/AngularJS-ResponsiveCalendar/demo/
 
 # Usage
 
+Bower Install: bower install ng-responsive-calendar
+
 Load the necessary dependent files:
 
     <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../css/calendar.css"/>
+    <link rel="stylesheet" href="<bower lib installation path>/ng-responsive-calendar/css/calendar.min.css"/>
     <script src="../lib/angular/angular.js"></script>
-    <script src="../src/calendar.js"></script>
+    <script src="<bower lib installation path>/ng-responsive-calendar/js/calendar-tpls.min.js"></script>
+
 
 Add the calendar module as a dependency to your application module:
 

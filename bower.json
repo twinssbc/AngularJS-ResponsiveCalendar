@@ -1,32 +1,32 @@
 {
-  "name": "ng-responsive-calendar",
-  "version": "0.1.0",
-  "homepage": "https://github.com/twinssbc/AngularJS-ResponsiveCalendar",
-  "authors": [
-    "twinssbc <bocong@hotmail.com>"
-  ],
-  "description": "A pure AngularJS responsive calendar directive",
-  "main": [
-    "css/rcalendar/calendar.css",
-    "src/rcalendar/calendar.js",
-    "template/rcalendar/calendar.html",
-    "template/rcalendar/day.html",
-    "template/rcalendar/month.html",
-    "template/rcalendar/week.html"
-  ],
-  "keywords": [
-    "angular",
-    "angularjs",
-    "calendar",
-    "responsive"
-  ],
-  "dependencies": {
-    "angular": "~1.2",
-    "bootstrap": "~3.0.3"
-  },
-  "license": "MIT",
-  "ignore": [
-    "demo",
-    "lib"
-  ]
+    "name": "ng-responsive-calendar",
+    "version": "0.1.0",
+    "homepage": "https://github.com/twinssbc/AngularJS-ResponsiveCalendar",
+    "authors": [
+        "twinssbc <bocong@hotmail.com>"
+    ],
+    "description": "A pure AngularJS responsive calendar directive",
+    "main": [
+        "dist/css/calendar/calendar.css",
+        "dist/css/calendar.min.css",
+        "dist/js/calendar-tpls.js",
+        "dist/js/calendar-tpls.min.js",
+        "LICENSE.txt",
+        "README.md"
+    ],
+    "keywords": [
+        "angular",
+        "angularjs",
+        "calendar",
+        "responsive"
+    ],
+    "dependencies": {
+        "angular": "~1.2",
+        "bootstrap": "~3.0.3"
+    },
+    "license": "MIT",
+    "ignore": [
+        "demo",
+        "lib"
+    ]
 }
