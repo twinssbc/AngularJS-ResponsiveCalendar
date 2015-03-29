@@ -1,8 +1,7 @@
-'use strict';
-
 angular.module('calendarDemoApp', ['ui.rCalendar']);
 
 angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', function ($scope) {
+    'use strict';
     $scope.changeMode = function (mode) {
         $scope.mode = mode;
     };

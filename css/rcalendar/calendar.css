@@ -132,7 +132,12 @@
 
 @media (max-width: 750px) {
     .weekview-allday-label, .dayview-allday-label, .calendar-hour-column, .calendar-week-column {
-        width: 30px;
+        width: 35px;
+    }
+
+    .table > tbody > tr > td.calendar-hour-column {
+        padding-left: 0px;
+        padding-right: 0px;
     }
 
     .weekview-allday-label, .dayview-allday-label {
@@ -140,7 +145,15 @@
     }
 
     .weekview-allday-content-wrapper, .dayview-allday-content-wrapper {
-        margin-left: 30px;
+        margin-left: 35px;
+    }
+
+    .weekview-header-date {
+        display: none;
+    }
+
+    .calendar-event-inner {
+        font-size: 12px;
     }
 }
 

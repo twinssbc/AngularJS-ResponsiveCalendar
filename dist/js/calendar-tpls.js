@@ -14,8 +14,9 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         queryMode: 'local'
     })
     .controller('CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
+        'use strict';
         var self = this,
-            ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl;
+            ngModelCtrl = {$setViewValue: angular.noop}; // nullModelCtrl;
 
         // Configuration attributes
         angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle',
@@ -160,7 +161,11 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             var cells = new Array(24),
                 event,
                 index,
-                i;
+                i,
+                j,
+                len,
+                eventCountInCell,
+                currentEventInCell;
 
             //sort by position in descending order, the right most columns should be calculated first
             orderedEvents.sort(function (eventA, eventB) {
@@ -172,7 +177,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     events: []
                 };
             }
-            var len = orderedEvents.length;
+            len = orderedEvents.length;
             for (i = 0; i < len; i += 1) {
                 event = orderedEvents[i];
                 index = event.startIndex;
@@ -194,12 +199,16 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                         while (index < event.endIndex) {
                             if (!cells[index].calculated) {
                                 cells[index].calculated = true;
-                                angular.forEach(cells[index].events, function (e) {
-                                    if (!e.overlapNumber) {
-                                        e.overlapNumber = overlapNumber;
-                                        eventQueue.push(e);
+                                if (cells[index].events) {
+                                    eventCountInCell = cells[index].events.length;
+                                    for (j = 0; j < eventCountInCell; j += 1) {
+                                        currentEventInCell = cells[index].events[j];
+                                        if (!currentEventInCell.overlapNumber) {
+                                            currentEventInCell.overlapNumber = overlapNumber;
+                                            eventQueue.push(currentEventInCell);
+                                        }
                                     }
-                                });
+                                }
                             }
                             index += 1;
                         }
@@ -219,6 +228,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         };
     }])
     .directive('calendar', function () {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -245,6 +255,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         };
     })
     .directive('monthview', ['dateFilter', function (dateFilter) {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -257,7 +268,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 scope.showEventDetail = ctrl.showEventDetail;
 
                 ctrl.mode = {
-                    step: { months: 1 }
+                    step: {months: 1}
                 };
 
                 function getDates(startDate, n) {
@@ -476,6 +487,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         };
     }])
     .directive('weekview', ['dateFilter', '$timeout', function (dateFilter, $timeout) {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -487,7 +499,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 });
 
                 ctrl.mode = {
-                    step: { days: 7 }
+                    step: {days: 7}
                 };
 
                 function updateScrollGutter() {
@@ -737,6 +749,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         };
     }])
     .directive('dayview', ['dateFilter', '$timeout', function (dateFilter, $timeout) {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -748,7 +761,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 });
 
                 ctrl.mode = {
-                    step: { days: 1 }
+                    step: {days: 1}
                 };
 
                 function updateScrollGutter() {
@@ -948,7 +961,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "        <table class=\"table table-bordered table-fixed\">\n" +
     "            <tbody>\n" +
     "            <tr ng-repeat=\"tm in rows track by $index\">\n" +
-    "                <td class=\"calendar-hour-column text-right\">\n" +
+    "                <td class=\"calendar-hour-column text-center\">\n" +
     "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
     "                </td>\n" +
     "                <td class=\"calendar-cell\">\n" +
@@ -1018,7 +1031,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        <thead>\n" +
     "        <tr>\n" +
     "            <th class=\"calendar-hour-column\"></th>\n" +
-    "            <th ng-repeat=\"dt in dates\" class=\"text-center\">{{dt.date| date: 'EEE M/d'}}</th>\n" +
+    "            <th ng-repeat=\"dt in dates\" class=\"text-center\">{{dt.date| date: 'EEE'}}<span class=\"weekview-header-date\">{{dt.date | date: ' M/d'}}</span></th>\n" +
     "            <th ng-if=\"gutterWidth>0\" ng-style=\"{width: gutterWidth+'px'}\"></th>\n" +
     "        </tr>\n" +
     "        </thead>\n" +
@@ -1050,7 +1063,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        <table class=\"table table-bordered table-fixed\">\n" +
     "            <tbody>\n" +
     "            <tr ng-repeat=\"row in rows track by $index\">\n" +
-    "                <td class=\"calendar-hour-column text-right\">\n" +
+    "                <td class=\"calendar-hour-column text-center\">\n" +
     "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
     "                </td>\n" +
     "                <td ng-repeat=\"tm in row track by tm.time\" class=\"calendar-cell\">\n" +

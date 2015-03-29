@@ -3,7 +3,7 @@
         <thead>
         <tr>
             <th class="calendar-hour-column"></th>
-            <th ng-repeat="dt in dates" class="text-center">{{dt.date| date: 'EEE M/d'}}</th>
+            <th ng-repeat="dt in dates" class="text-center">{{dt.date| date: 'EEE'}}<span class="weekview-header-date">{{dt.date | date: ' M/d'}}</span></th>
             <th ng-if="gutterWidth>0" ng-style="{width: gutterWidth+'px'}"></th>
         </tr>
         </thead>
@@ -35,7 +35,7 @@
         <table class="table table-bordered table-fixed">
             <tbody>
             <tr ng-repeat="row in rows track by $index">
-                <td class="calendar-hour-column text-right">
+                <td class="calendar-hour-column text-center">
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
                 </td>
                 <td ng-repeat="tm in row track by tm.time" class="calendar-cell">

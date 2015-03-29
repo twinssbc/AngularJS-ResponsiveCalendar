@@ -13,8 +13,9 @@ angular.module('ui.rCalendar', [])
         queryMode: 'local'
     })
     .controller('CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
+        'use strict';
         var self = this,
-            ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl;
+            ngModelCtrl = {$setViewValue: angular.noop}; // nullModelCtrl;
 
         // Configuration attributes
         angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle',
@@ -159,7 +160,11 @@ angular.module('ui.rCalendar', [])
             var cells = new Array(24),
                 event,
                 index,
-                i;
+                i,
+                j,
+                len,
+                eventCountInCell,
+                currentEventInCell;
 
             //sort by position in descending order, the right most columns should be calculated first
             orderedEvents.sort(function (eventA, eventB) {
@@ -171,7 +176,7 @@ angular.module('ui.rCalendar', [])
                     events: []
                 };
             }
-            var len = orderedEvents.length;
+            len = orderedEvents.length;
             for (i = 0; i < len; i += 1) {
                 event = orderedEvents[i];
                 index = event.startIndex;
@@ -193,12 +198,16 @@ angular.module('ui.rCalendar', [])
                         while (index < event.endIndex) {
                             if (!cells[index].calculated) {
                                 cells[index].calculated = true;
-                                angular.forEach(cells[index].events, function (e) {
-                                    if (!e.overlapNumber) {
-                                        e.overlapNumber = overlapNumber;
-                                        eventQueue.push(e);
+                                if (cells[index].events) {
+                                    eventCountInCell = cells[index].events.length;
+                                    for (j = 0; j < eventCountInCell; j += 1) {
+                                        currentEventInCell = cells[index].events[j];
+                                        if (!currentEventInCell.overlapNumber) {
+                                            currentEventInCell.overlapNumber = overlapNumber;
+                                            eventQueue.push(currentEventInCell);
+                                        }
                                     }
-                                });
+                                }
                             }
                             index += 1;
                         }
@@ -218,6 +227,7 @@ angular.module('ui.rCalendar', [])
         };
     }])
     .directive('calendar', function () {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -244,6 +254,7 @@ angular.module('ui.rCalendar', [])
         };
     })
     .directive('monthview', ['dateFilter', function (dateFilter) {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -256,7 +267,7 @@ angular.module('ui.rCalendar', [])
                 scope.showEventDetail = ctrl.showEventDetail;
 
                 ctrl.mode = {
-                    step: { months: 1 }
+                    step: {months: 1}
                 };
 
                 function getDates(startDate, n) {
@@ -475,6 +486,7 @@ angular.module('ui.rCalendar', [])
         };
     }])
     .directive('weekview', ['dateFilter', '$timeout', function (dateFilter, $timeout) {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -486,7 +498,7 @@ angular.module('ui.rCalendar', [])
                 });
 
                 ctrl.mode = {
-                    step: { days: 7 }
+                    step: {days: 7}
                 };
 
                 function updateScrollGutter() {
@@ -736,6 +748,7 @@ angular.module('ui.rCalendar', [])
         };
     }])
     .directive('dayview', ['dateFilter', '$timeout', function (dateFilter, $timeout) {
+        'use strict';
         return {
             restrict: 'EA',
             replace: true,
@@ -747,7 +760,7 @@ angular.module('ui.rCalendar', [])
                 });
 
                 ctrl.mode = {
-                    step: { days: 1 }
+                    step: {days: 1}
                 };
 
                 function updateScrollGutter() {
