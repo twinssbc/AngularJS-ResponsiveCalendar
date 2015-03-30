@@ -364,6 +364,16 @@ angular.module('ui.rCalendar', [])
                     };
                 }
 
+                function compareEvent(event1, event2) {
+                    if (event1.allDay) {
+                        return 1;
+                    } else if (event2.allDay) {
+                        return -1;
+                    } else {
+                        return (event1.startTime.getTime() - event2.startTime.getTime());
+                    }
+                }
+
                 ctrl._onDataLoaded = function () {
                     var eventSource = ctrl.eventSource,
                         len = eventSource ? eventSource.length : 0,
@@ -374,7 +384,9 @@ angular.module('ui.rCalendar', [])
                         utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60 * 1000),
                         rows = scope.rows,
                         oneDay = 24 * 3600 * 1000,
-                        eps = 0.001;
+                        eps = 0.001,
+                        row,
+                        date;
 
                     for (var i = 0; i < len; i += 1) {
                         var event = eventSource[i];
@@ -431,9 +443,17 @@ angular.module('ui.rCalendar', [])
                         }
                     }
 
+                    for (row = 0; row < 6; row += 1) {
+                        for (date = 0; date < 7; date += 1) {
+                            if (rows[row][date].hasEvent) {
+                                rows[row][date].events.sort(compareEvent);
+                            }
+                        }
+                    }
+
                     var findSelected = false;
-                    for (var row = 0; row < 6; row += 1) {
-                        for (var date = 0; date < 7; date += 1) {
+                    for (row = 0; row < 6; row += 1) {
+                        for (date = 0; date < 7; date += 1) {
                             if (rows[row][date].selected) {
                                 scope.selectedDate = rows[row][date];
                                 findSelected = true;
