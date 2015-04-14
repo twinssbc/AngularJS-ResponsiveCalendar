@@ -1051,7 +1051,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        <thead>\n" +
     "        <tr>\n" +
     "            <th class=\"calendar-hour-column\"></th>\n" +
-    "            <th ng-repeat=\"dt in dates\" class=\"text-center\">{{dt.date| date: 'EEE'}}<span class=\"weekview-header-date\">{{dt.date | date: ' M/d'}}</span></th>\n" +
+    "            <th ng-repeat=\"dt in dates\" class=\"text-center weekview-header-label\">{{dt.date| date: 'EEE d'}}</span></th>\n" +
     "            <th ng-if=\"gutterWidth>0\" ng-style=\"{width: gutterWidth+'px'}\"></th>\n" +
     "        </tr>\n" +
     "        </thead>\n" +

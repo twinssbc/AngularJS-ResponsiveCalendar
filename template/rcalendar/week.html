@@ -3,7 +3,7 @@
         <thead>
         <tr>
             <th class="calendar-hour-column"></th>
-            <th ng-repeat="dt in dates" class="text-center">{{dt.date| date: 'EEE'}}<span class="weekview-header-date">{{dt.date | date: ' M/d'}}</span></th>
+            <th ng-repeat="dt in dates" class="text-center weekview-header-label">{{dt.date| date: 'EEE d'}}</span></th>
             <th ng-if="gutterWidth>0" ng-style="{width: gutterWidth+'px'}"></th>
         </tr>
         </thead>
