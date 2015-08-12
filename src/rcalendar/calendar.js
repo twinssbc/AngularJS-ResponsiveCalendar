@@ -83,6 +83,7 @@ angular.module('ui.rCalendar', [])
             if (self._onDataLoaded) {
                 self._onDataLoaded();
             }
+            self.refreshView();
         };
 
         $scope.move = function (direction) {
