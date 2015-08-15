@@ -380,13 +380,25 @@ angular.module('ui.rCalendar', [])
                         startTime = ctrl.range.startTime,
                         endTime = ctrl.range.endTime,
                         timeZoneOffset = -new Date().getTimezoneOffset(),
-                        utcStartTime = new Date(startTime.getTime() + timeZoneOffset * 60 * 1000),
-                        utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60 * 1000),
+                        utcStartTime = new Date(startTime.getTime() + timeZoneOffset * 60000),
+                        utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60000),
                         rows = scope.rows,
-                        oneDay = 24 * 3600 * 1000,
+                        oneDay = 86400000,
                         eps = 0.001,
                         row,
-                        date;
+                        date,
+                        hasEvent = false;
+
+                    if (rows.hasEvent) {
+                        for (row = 0; row < 6; row += 1) {
+                            for (date = 0; date < 7; date += 1) {
+                                if (rows[row][date].hasEvent) {
+                                    rows[row][date].events = null;
+                                    rows[row][date].hasEvent = false;
+                                }
+                            }
+                        }
+                    }
 
                     for (var i = 0; i < len; i += 1) {
                         var event = eventSource[i];
@@ -446,10 +458,12 @@ angular.module('ui.rCalendar', [])
                     for (row = 0; row < 6; row += 1) {
                         for (date = 0; date < 7; date += 1) {
                             if (rows[row][date].hasEvent) {
+                                hasEvent = true;
                                 rows[row][date].events.sort(compareEvent);
                             }
                         }
                     }
+                    rows.hasEvent = hasEvent;
 
                     var findSelected = false;
                     for (row = 0; row < 6; row += 1) {
@@ -588,13 +602,35 @@ angular.module('ui.rCalendar', [])
                         utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60 * 1000),
                         rows = scope.rows,
                         dates = scope.dates,
-                        oneHour = 3600 * 1000,
-                        oneDay = 24 * 3600 * 1000,
+                        oneHour = 3600000,
+                        oneDay = 86400000,
                     //add allday eps
                         eps = 0.016,
                         eventSet,
                         allDayEventInRange = false,
-                        normalEventInRange = false;
+                        normalEventInRange = false,
+                        day,
+                        hour;
+
+                    if (rows.hasEvent) {
+                        for (day = 0; day < 7; day += 1) {
+                            for (hour = 0; hour < 24; hour += 1) {
+                                if (rows[hour][day].events) {
+                                    rows[hour][day].events = null;
+                                }
+                            }
+                        }
+                        rows.hasEvent = false;
+                    }
+
+                    if (dates.hasEvent) {
+                        for (day = 0; day < 7; day += 1) {
+                            if (dates[day].events) {
+                                dates[day].events = null;
+                            }
+                        }
+                        dates.hasEvent = false;
+                    }
 
                     for (var i = 0; i < len; i += 1) {
                         var event = eventSource[i];
@@ -690,16 +726,16 @@ angular.module('ui.rCalendar', [])
                         }
                     }
 
-                    var day;
                     if (normalEventInRange) {
                         for (day = 0; day < 7; day += 1) {
                             var orderedEvents = [];
-                            for (var hour = 0; hour < 24; hour += 1) {
+                            for (hour = 0; hour < 24; hour += 1) {
                                 if (rows[hour][day].events) {
                                     orderedEvents = orderedEvents.concat(rows[hour][day].events);
                                 }
                             }
                             if (orderedEvents.length > 0) {
+                                rows.hasEvent = true;
                                 ctrl.placeEvents(orderedEvents);
                             }
                         }
@@ -713,6 +749,7 @@ angular.module('ui.rCalendar', [])
                             }
                         }
                         if (orderedAllDayEvents.length > 0) {
+                            dates.hasEvent = true;
                             ctrl.placeAllDayEvents(orderedAllDayEvents);
                         }
                     }
@@ -829,11 +866,21 @@ angular.module('ui.rCalendar', [])
                         utcStartTime = new Date(startTime.getTime() + timeZoneOffset * 60 * 1000),
                         utcEndTime = new Date(endTime.getTime() + timeZoneOffset * 60 * 1000),
                         rows = scope.rows,
-                        allDayEvents = scope.allDayEvents,
-                        oneHour = 3600 * 1000,
+                        allDayEvents = [],
+                        oneHour = 3600000,
                         eps = 0.016,
                         eventSet,
-                        normalEventInRange = false;
+                        normalEventInRange = false,
+                        hour;
+
+                    if (rows.hasEvent) {
+                        for (hour = 0; hour < 24; hour += 1) {
+                            if (rows[hour].events) {
+                                rows[hour].events = null;
+                            }
+                        }
+                        rows.hasEvent = false;
+                    }
 
                     for (var i = 0; i < len; i += 1) {
                         var event = eventSource[i];
@@ -891,15 +938,18 @@ angular.module('ui.rCalendar', [])
 
                     if (normalEventInRange) {
                         var orderedEvents = [];
-                        for (var hour = 0; hour < 24; hour += 1) {
+                        for (hour = 0; hour < 24; hour += 1) {
                             if (rows[hour].events) {
                                 orderedEvents = orderedEvents.concat(rows[hour].events);
                             }
                         }
                         if (orderedEvents.length > 0) {
+                            rows.hasEvent = true;
                             ctrl.placeEvents(orderedEvents);
                         }
                     }
+
+                    scope.allDayEvents = allDayEvents;
 
                     $timeout(function () {
                         updateScrollGutter();
