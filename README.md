@@ -7,16 +7,19 @@ http://twinssbc.github.io/AngularJS-ResponsiveCalendar/demo/
 
 # Usage
 
+Bower Install: `bower install ng-responsive-calendar`
+
 Load the necessary dependent files:
 
     <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../css/calendar.css"/>
+    <link rel="stylesheet" href="<bower lib installation path>/ng-responsive-calendar/dist/css/calendar.min.css"/>
     <script src="../lib/angular/angular.js"></script>
-    <script src="../src/calendar.js"></script>
+    <script src="<bower lib installation path>/ng-responsive-calendar/dist/js/calendar-tpls.min.js"></script>
+
 
 Add the calendar module as a dependency to your application module:
 
-    var myAppModule = angular.module('MyApp', ['ui.responsiveCalendar'])
+    var myAppModule = angular.module('MyApp', ['ui.rCalendar'])
 
 Add the directive in the html page
 
@@ -108,3 +111,10 @@ For example, if an allDay event ending to 2014-05-10, then endTime is
 
 * allDay    
 Indicates the event is allDay event or regular event
+
+**Note**
+In the current version, the calendar controller only watches for the eventSource reference as it's the least expensive.
+That means only you manually reassign the eventSource value, the controller get notified, and this is usually fit to the scenario when the range is changed, you load a new data set from the backend.
+In case you want to manually insert/remove/update the element in the eventSource array, you can call broadcast the 'eventSourceChanged' event to notify the controller manually..
+
+        $scope.$broadcast('eventSourceChanged',$scope.eventSource);

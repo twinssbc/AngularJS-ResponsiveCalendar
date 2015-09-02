@@ -1,8 +1,22 @@
 angular.module('calendarDemoApp', ['ui.rCalendar']);
 
 angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', function ($scope) {
+    'use strict';
     $scope.changeMode = function (mode) {
         $scope.mode = mode;
+    };
+
+    $scope.today = function () {
+        $scope.currentDate = new Date();
+    };
+
+    $scope.isToday = function () {
+        var today = new Date(),
+            currentCalendarDate = new Date($scope.currentDate);
+
+        today.setHours(0, 0, 0, 0);
+        currentCalendarDate.setHours(0, 0, 0, 0);
+        return today.getTime() === currentCalendarDate.getTime();
     };
 
     $scope.loadEvents = function () {

@@ -24,7 +24,7 @@
         <table class="table table-bordered table-fixed">
             <tbody>
             <tr ng-repeat="tm in rows track by $index">
-                <td class="calendar-hour-column text-right">
+                <td class="calendar-hour-column text-center">
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
                 </td>
                 <td class="calendar-cell">
