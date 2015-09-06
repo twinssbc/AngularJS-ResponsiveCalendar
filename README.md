@@ -31,7 +31,7 @@ Add the directive in the html page
 The format of the date displayed in the month view.    
 Default value: 'dd'
 * formatDayHeader    
-The format of the header displayed in the month view.
+The format of the header displayed in the month view.    
 Default value: 'EEE'
 * formatDayTitle    
 The format of the title displayed in the month view.    
@@ -120,16 +120,16 @@ In case you want to manually insert/remove/update the element in the eventSource
 # Events
 
 * changeDate
-When receiving this event, the calendar will move the current view to previous or next range.
-Parameter: direction
-1 - Forward
+When receiving this event, the calendar will move the current view to previous or next range.  
+Parameter: direction  
+1 - Forward  
 -1 - Backward
 
         $scope.$broadcast('changeDate', 1);
 
 * eventSourceChanged
-This event is only needed when you manually modify the element in the eventSource array
-Parameter: value
+This event is only needed when you manually modify the element in the eventSource array.  
+Parameter: value  
 The whole event source object
 
         $scope.$broadcast('eventSourceChanged',$scope.eventSource);
