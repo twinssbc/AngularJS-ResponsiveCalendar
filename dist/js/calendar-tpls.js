@@ -105,6 +105,10 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             self.refreshView();
         };
 
+        self.move = function (direction) {
+            $scope.move(direction);
+        };
+
         self.rangeChanged = function () {
             if (self.queryMode === 'local') {
                 if (self.eventSource && self._onDataLoaded) {
@@ -247,6 +251,10 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 if (ngModelCtrl) {
                     calendarCtrl.init(ngModelCtrl);
                 }
+
+                scope.$on('changeDate', function (event, direction) {
+                    calendarCtrl.move(direction);
+                });
 
                 scope.$on('eventSourceChanged', function (event, value) {
                     calendarCtrl.onEventSourceChanged(value);

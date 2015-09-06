@@ -252,7 +252,7 @@ angular.module('ui.rCalendar', [])
                 }
 
                 scope.$on('changeDate', function (event, direction) {
-                   calendarCtrl.move(direction);
+                    calendarCtrl.move(direction);
                 });
 
                 scope.$on('eventSourceChanged', function (event, value) {
