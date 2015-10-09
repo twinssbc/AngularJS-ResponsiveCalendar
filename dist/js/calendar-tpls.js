@@ -999,7 +999,7 @@ angular.module("template/rcalendar/calendar.html", []).run(["$templateCache", fu
     "            <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"move(-1)\"><i\n" +
     "                    class=\"glyphicon glyphicon-chevron-left\"></i></button>\n" +
     "        </div>\n" +
-    "        <div class=\"calendar-header col-xs-8\"><strong>{{title}}</strong></div>\n" +
+    "        <div class=\"calendar-header col-xs-8\">{{title}}</div>\n" +
     "        <div class=\"nav-right col-xs-2\">\n" +
     "            <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"move(1)\"><i\n" +
     "                    class=\"glyphicon glyphicon-chevron-right\"></i></button>\n" +
@@ -1008,7 +1008,8 @@ angular.module("template/rcalendar/calendar.html", []).run(["$templateCache", fu
     "    <dayview ng-switch-when=\"day\"></dayview>\n" +
     "    <monthview ng-switch-when=\"month\"></monthview>\n" +
     "    <weekview ng-switch-when=\"week\"></weekview>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("template/rcalendar/day.html", []).run(["$templateCache", function($templateCache) {
