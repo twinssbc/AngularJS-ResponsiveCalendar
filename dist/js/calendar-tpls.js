@@ -24,7 +24,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             self[key] = angular.isDefined($attrs[key]) ? (index < 5 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
 
-        $scope.$parent.$watch('eventSource', function (value) {
+        $scope.$parent.$watch($attrs['eventSource'], function (value) {
             self.onEventSourceChanged(value);
         });
 
