@@ -12,7 +12,7 @@ angular.module('ui.rCalendar', [])
         eventSource: null,
         queryMode: 'local'
     })
-    .controller('CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
+    .controller('ui.rCalendar.CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
         'use strict';
         var self = this,
             ngModelCtrl = {$setViewValue: angular.noop}; // nullModelCtrl;
@@ -23,7 +23,7 @@ angular.module('ui.rCalendar', [])
             self[key] = angular.isDefined($attrs[key]) ? (index < 5 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
 
-        $scope.$parent.$watch('eventSource', function (value) {
+        $scope.$parent.$watch($attrs.eventSource, function (value) {
             self.onEventSourceChanged(value);
         });
 
@@ -124,10 +124,7 @@ angular.module('ui.rCalendar', [])
         };
 
         function overlap(event1, event2) {
-            if (event1.endIndex <= event2.startIndex || event2.endIndex <= event1.startIndex) {
-                return false;
-            }
-            return true;
+            return !(event1.endIndex <= event2.startIndex || event2.endIndex <= event1.startIndex);
         }
 
         function calculatePosition(events) {
@@ -243,7 +240,7 @@ angular.module('ui.rCalendar', [])
                 timeSelected: '&'
             },
             require: ['calendar', '?^ngModel'],
-            controller: 'CalendarController',
+            controller: 'ui.rCalendar.CalendarController',
             link: function (scope, element, attrs, ctrls) {
                 var calendarCtrl = ctrls[0], ngModelCtrl = ctrls[1];
 
