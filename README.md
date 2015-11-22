@@ -1,6 +1,7 @@
 # ui-rCalendar directive
 
-A pure AngularJS responsive calendar directive
+A pure AngularJS responsive calendar directive    
+If you want to only use it in Ionic framework, please check https://github.com/twinssbc/Ionic-Calendar for the Ionic specific version
 
 # Demo
 http://twinssbc.github.io/AngularJS-ResponsiveCalendar/demo/
