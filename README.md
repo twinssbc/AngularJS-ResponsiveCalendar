@@ -84,7 +84,7 @@ The callback function triggered when an event is clicked
         };
 
 * timeSelected
-The callback function triggered when a date is selected in the monthview
+The callback function triggered when a date or time is selected
 
         <calendar ... time-selected="onTimeSelected(selectedTime)"></calendar>
         

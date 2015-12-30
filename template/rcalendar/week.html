@@ -3,8 +3,8 @@
         <thead>
         <tr>
             <th class="calendar-hour-column"></th>
-            <th ng-repeat="dt in dates" class="text-center weekview-header-label">{{dt.date| date: 'EEE d'}}</span></th>
-            <th ng-if="gutterWidth>0" ng-style="{width: gutterWidth+'px'}"></th>
+            <th ng-repeat="dt in dates" class="text-center weekview-header-label">{{dt.date| date: 'EEE d'}}</th>
+            <th ng-if="gutterWidth>0" class="gutter-column" ng-style="{width: gutterWidth+'px'}"></th>
         </tr>
         </thead>
     </table>
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </td>
-                    <td ng-if="allDayEventGutterWidth>0" ng-style="{width: allDayEventGutterWidth+'px'}"></td>
+                    <td ng-if="allDayEventGutterWidth>0" class="gutter-column" ng-style="{width: allDayEventGutterWidth+'px'}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -38,7 +38,7 @@
                 <td class="calendar-hour-column text-center">
                     {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}
                 </td>
-                <td ng-repeat="tm in row track by tm.time" class="calendar-cell">
+                <td ng-repeat="tm in row track by tm.time" class="calendar-cell" ng-click="select(tm.time)">
                     <div ng-class="{'calendar-event-wrap': tm.events}" ng-if="tm.events">
                         <div ng-repeat="displayEvent in tm.events" class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </td>
-                <td ng-if="normalGutterWidth>0" ng-style="{width: normalGutterWidth+'px'}"></td>
+                <td ng-if="normalGutterWidth>0" class="gutter-column" ng-style="{width: normalGutterWidth+'px'}"></td>
             </tr>
             </tbody>
         </table>

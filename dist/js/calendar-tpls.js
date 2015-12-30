@@ -580,23 +580,30 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 function createDateObjects(startTime) {
                     var times = [],
                         row,
-                        time = new Date(startTime.getTime()),
-                        currentHour = time.getHours(),
-                        currentDate = time.getDate();
+                        time,
+                        currentHour = startTime.getHours(),
+                        currentDate = startTime.getDate();
 
                     for (var hour = 0; hour < 24; hour += 1) {
                         row = [];
                         for (var day = 0; day < 7; day += 1) {
+                            time = new Date(startTime.getTime());
                             time.setHours(currentHour + hour);
                             time.setDate(currentDate + day);
                             row.push({
-                                time: new Date(time.getTime())
+                                time: time
                             });
                         }
                         times.push(row);
                     }
                     return times;
                 }
+
+                scope.select = function (selectedTime) {
+                    if (scope.timeSelected) {
+                        scope.timeSelected({selectedTime: selectedTime});
+                    }
+                };
 
                 ctrl._onDataLoaded = function () {
                     var eventSource = ctrl.eventSource,
@@ -849,19 +856,27 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
                 function createDateObjects(startTime) {
                     var rows = [],
-                        time = new Date(startTime.getTime()),
-                        currentHour = time.getHours(),
-                        currentDate = time.getDate();
+                        time,
+                        currentHour = startTime.getHours(),
+                        currentDate = startTime.getDate();
 
                     for (var hour = 0; hour < 24; hour += 1) {
+                        time = new Date(startTime.getTime());
                         time.setHours(currentHour + hour);
                         time.setDate(currentDate);
                         rows.push({
-                            time: new Date(time.getTime())
+                            time: time
                         });
                     }
                     return rows;
+
                 }
+
+                scope.select = function (selectedTime) {
+                    if (scope.timeSelected) {
+                        scope.timeSelected({selectedTime: selectedTime});
+                    }
+                };
 
                 ctrl._onDataLoaded = function () {
                     var eventSource = ctrl.eventSource,
@@ -1027,7 +1042,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "                            <div class=\"calendar-event-inner\">{{displayEvent.event.title}}</div>\n" +
     "                        </div>\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"allDayEventGutterWidth>0\" ng-style=\"{width:allDayEventGutterWidth+'px'}\"></td>\n" +
+    "                    <td ng-if=\"allDayEventGutterWidth>0\" class=\"gutter-column\" ng-style=\"{width:allDayEventGutterWidth+'px'}\"></td>\n" +
     "                </tr>\n" +
     "                </tbody>\n" +
     "            </table>\n" +
@@ -1040,7 +1055,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "                <td class=\"calendar-hour-column text-center\">\n" +
     "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
     "                </td>\n" +
-    "                <td class=\"calendar-cell\">\n" +
+    "                <td class=\"calendar-cell\" ng-click=\"select(tm.time)\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +
     "                        <div ng-repeat=\"displayEvent in tm.events\" class=\"calendar-event\"\n" +
     "                             ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
@@ -1107,8 +1122,8 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        <thead>\n" +
     "        <tr>\n" +
     "            <th class=\"calendar-hour-column\"></th>\n" +
-    "            <th ng-repeat=\"dt in dates\" class=\"text-center weekview-header-label\">{{dt.date| date: 'EEE d'}}</span></th>\n" +
-    "            <th ng-if=\"gutterWidth>0\" ng-style=\"{width: gutterWidth+'px'}\"></th>\n" +
+    "            <th ng-repeat=\"dt in dates\" class=\"text-center weekview-header-label\">{{dt.date| date: 'EEE d'}}</th>\n" +
+    "            <th ng-if=\"gutterWidth>0\" class=\"gutter-column\" ng-style=\"{width: gutterWidth+'px'}\"></th>\n" +
     "        </tr>\n" +
     "        </thead>\n" +
     "    </table>\n" +
@@ -1129,7 +1144,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                            </div>\n" +
     "                        </div>\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"allDayEventGutterWidth>0\" ng-style=\"{width: allDayEventGutterWidth+'px'}\"></td>\n" +
+    "                    <td ng-if=\"allDayEventGutterWidth>0\" class=\"gutter-column\" ng-style=\"{width: allDayEventGutterWidth+'px'}\"></td>\n" +
     "                </tr>\n" +
     "                </tbody>\n" +
     "            </table>\n" +
@@ -1142,7 +1157,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                <td class=\"calendar-hour-column text-center\">\n" +
     "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
     "                </td>\n" +
-    "                <td ng-repeat=\"tm in row track by tm.time\" class=\"calendar-cell\">\n" +
+    "                <td ng-repeat=\"tm in row track by tm.time\" class=\"calendar-cell\" ng-click=\"select(tm.time)\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +
     "                        <div ng-repeat=\"displayEvent in tm.events\" class=\"calendar-event\"\n" +
     "                             ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
@@ -1151,7 +1166,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                        </div>\n" +
     "                    </div>\n" +
     "                </td>\n" +
-    "                <td ng-if=\"normalGutterWidth>0\" ng-style=\"{width: normalGutterWidth+'px'}\"></td>\n" +
+    "                <td ng-if=\"normalGutterWidth>0\" class=\"gutter-column\" ng-style=\"{width: normalGutterWidth+'px'}\"></td>\n" +
     "            </tr>\n" +
     "            </tbody>\n" +
     "        </table>\n" +
