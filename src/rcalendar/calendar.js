@@ -350,12 +350,11 @@ angular.module('ui.rCalendar', [])
 
                     if (scope.showWeeks) {
                         scope.weekNumbers = [];
-                        var weekNumber = getISO8601WeekNumber(scope.rows[0][0].date),
-                            numWeeks = scope.rows.length,
-                            len = 0;
-                        while (len < numWeeks) {
-                            len = scope.weekNumbers.push(weekNumber);
-                            weekNumber += 1;
+                        var thursdayIndex = (4 + 7 - ctrl.startingDay) % 7,
+                            numWeeks = scope.rows.length;
+                        for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
+                            scope.weekNumbers.push(
+                                getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
                         }
                     }
                 };
