@@ -1073,7 +1073,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
 angular.module("template/rcalendar/month.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/rcalendar/month.html",
     "<div>\n" +
-    "    <table class=\"table table-bordered monthview-datetable monthview-datetable\">\n" +
+    "    <table class=\"table table-bordered table-fixed monthview-datetable monthview-datetable\">\n" +
     "        <thead>\n" +
     "        <tr>\n" +
     "            <th ng-show=\"showWeeks\" class=\"calendar-week-column text-center\">#</th>\n" +
