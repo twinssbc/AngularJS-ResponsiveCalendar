@@ -6,6 +6,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         formatDayTitle: 'MMMM dd, yyyy',
         formatWeekTitle: 'MMMM yyyy, Week w',
         formatMonthTitle: 'MMMM yyyy',
+        formatWeekViewDayHeader: 'EEE d',
+        formatHourColumn: 'ha',
         calendarMode: 'month',
         showWeeks: false,
         showEventDetail: true,
@@ -19,9 +21,9 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             ngModelCtrl = {$setViewValue: angular.noop}; // nullModelCtrl;
 
         // Configuration attributes
-        angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle',
+        angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle', 'formatWeekViewDayHeader', 'formatHourColumn',
             'showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode'], function (key, index) {
-            self[key] = angular.isDefined($attrs[key]) ? (index < 5 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
+            self[key] = angular.isDefined($attrs[key]) ? (index < 7 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
 
         $scope.$parent.$watch($attrs.eventSource, function (value) {
@@ -532,6 +534,9 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             templateUrl: 'template/rcalendar/week.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
+                scope.formatWeekViewDayHeader = ctrl.formatWeekViewDayHeader;
+                scope.formatHourColumn = ctrl.formatHourColumn;
+
                 $timeout(function () {
                     updateScrollGutter();
                 });
@@ -824,6 +829,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             templateUrl: 'template/rcalendar/day.html',
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
+                scope.formatHourColumn = ctrl.formatHourColumn;
+
                 $timeout(function () {
                     updateScrollGutter();
                 });
@@ -1031,7 +1038,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "            all day\n" +
     "        </div>\n" +
     "        <div class=\"dayview-allday-content-wrapper\">\n" +
-    "            <table class=\"table table-bordered\" style=\"height: 100%; margin-bottom: 0px\">\n" +
+    "            <table class=\"table table-bordered\" style=\"height: 100%; margin-bottom: 0\">\n" +
     "                <tbody>\n" +
     "                <tr>\n" +
     "                    <td class=\"calendar-cell\" ng-class=\"{'calendar-event-wrap':allDayEvents}\">\n" +
@@ -1052,7 +1059,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "            <tbody>\n" +
     "            <tr ng-repeat=\"tm in rows track by $index\">\n" +
     "                <td class=\"calendar-hour-column text-center\">\n" +
-    "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
+    "                    {{tm.time | date: formatHourColumn}}\n" +
     "                </td>\n" +
     "                <td class=\"calendar-cell\" ng-click=\"select(tm.time)\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +
@@ -1121,7 +1128,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        <thead>\n" +
     "        <tr>\n" +
     "            <th class=\"calendar-hour-column\"></th>\n" +
-    "            <th ng-repeat=\"dt in dates\" class=\"text-center weekview-header-label\">{{dt.date| date: 'EEE d'}}</th>\n" +
+    "            <th ng-repeat=\"dt in dates\" class=\"text-center weekview-header-label\">{{dt.date| date: formatWeekViewDayHeader}}</th>\n" +
     "            <th ng-if=\"gutterWidth>0\" class=\"gutter-column\" ng-style=\"{width: gutterWidth+'px'}\"></th>\n" +
     "        </tr>\n" +
     "        </thead>\n" +
@@ -1154,7 +1161,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "            <tbody>\n" +
     "            <tr ng-repeat=\"row in rows track by $index\">\n" +
     "                <td class=\"calendar-hour-column text-center\">\n" +
-    "                    {{$index<12?($index === 0?12:$index)+'am':($index === 12?$index:$index-12)+'pm'}}\n" +
+    "                    {{row[0].time | date: formatHourColumn}}\n" +
     "                </td>\n" +
     "                <td ng-repeat=\"tm in row track by tm.time\" class=\"calendar-cell\" ng-click=\"select(tm.time)\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +

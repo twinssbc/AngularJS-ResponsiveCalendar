@@ -68,7 +68,7 @@
 }
 
 .calendar-cell {
-    padding: 0px !important;
+    padding: 0 !important;
     height: 37px;
 }
 
@@ -105,9 +105,8 @@
     line-height: 50px;
     text-align: center;
     width: 50px;
-    border-width: 1px 0px 1px 1px;
-    border-color: #ddd;
-    border-style: solid;
+    border: 1px solid #ddd;
+    border-right-width: 0;
 }
 
 .weekview-allday-content-wrapper, .dayview-allday-content-wrapper {
@@ -118,7 +117,7 @@
 }
 
 .weekview-header, .monthview-datetable {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .weekview-header th {
@@ -131,8 +130,8 @@
 }
 
 .gutter-column {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 @media (max-width: 750px) {
@@ -141,8 +140,8 @@
     }
 
     .table > tbody > tr > td.calendar-hour-column, .table > thead > tr > th.weekview-header-label {
-        padding-left: 0px;
-        padding-right: 0px;
+        padding-left: 0;
+        padding-right: 0;
         font-size: 12px;
     }
 
