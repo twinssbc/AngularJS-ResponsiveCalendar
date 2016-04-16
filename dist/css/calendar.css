@@ -126,7 +126,12 @@
 }
 
 .weekview-allday-table, .dayview-allday-table {
-    height: 50px;
+    height: 52px;
+}
+
+.weekview-allday-content-table, .dayview-allday-content-table {
+    min-height: 100%;
+    margin-bottom: 0;
 }
 
 .gutter-column {

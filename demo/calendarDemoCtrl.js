@@ -33,7 +33,7 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
 
     function createRandomEvents() {
         var events = [];
-        for (var i = 0; i < 20; i += 1) {
+        for (var i = 0; i < 50; i += 1) {
             var date = new Date();
             var eventType = Math.floor(Math.random() * 2);
             var startDay = Math.floor(Math.random() * 90) - 45;

@@ -1038,17 +1038,19 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "            all day\n" +
     "        </div>\n" +
     "        <div class=\"dayview-allday-content-wrapper\">\n" +
-    "            <table class=\"table table-bordered\" style=\"height: 100%; margin-bottom: 0\">\n" +
+    "            <table class=\"table table-bordered dayview-allday-content-table\">\n" +
     "                <tbody>\n" +
     "                <tr>\n" +
-    "                    <td class=\"calendar-cell\" ng-class=\"{'calendar-event-wrap':allDayEvents}\">\n" +
+    "                    <td class=\"calendar-cell\" ng-class=\"{'calendar-event-wrap':allDayEvents}\"\n" +
+    "                        ng-style=\"{height: 25*allDayEvents.length+'px'}\">\n" +
     "                        <div ng-repeat=\"displayEvent in allDayEvents\" class=\"calendar-event\"\n" +
     "                             ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
     "                             ng-style=\"{top: 25*$index+'px',width: '100%',height:'25px'}\">\n" +
     "                            <div class=\"calendar-event-inner\">{{displayEvent.event.title}}</div>\n" +
     "                        </div>\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"allDayEventGutterWidth>0\" class=\"gutter-column\" ng-style=\"{width:allDayEventGutterWidth+'px'}\"></td>\n" +
+    "                    <td ng-if=\"allDayEventGutterWidth>0\" class=\"gutter-column\"\n" +
+    "                        ng-style=\"{width:allDayEventGutterWidth+'px'}\"></td>\n" +
     "                </tr>\n" +
     "                </tbody>\n" +
     "            </table>\n" +
@@ -1128,7 +1130,9 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        <thead>\n" +
     "        <tr>\n" +
     "            <th class=\"calendar-hour-column\"></th>\n" +
-    "            <th ng-repeat=\"dt in dates\" class=\"text-center weekview-header-label\">{{dt.date| date: formatWeekViewDayHeader}}</th>\n" +
+    "            <th ng-repeat=\"dt in dates\" class=\"text-center weekview-header-label\">{{dt.date| date:\n" +
+    "                formatWeekViewDayHeader}}\n" +
+    "            </th>\n" +
     "            <th ng-if=\"gutterWidth>0\" class=\"gutter-column\" ng-style=\"{width: gutterWidth+'px'}\"></th>\n" +
     "        </tr>\n" +
     "        </thead>\n" +
@@ -1138,11 +1142,12 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "            all day\n" +
     "        </div>\n" +
     "        <div class=\"weekview-allday-content-wrapper\">\n" +
-    "            <table class=\"table table-bordered table-fixed\" style=\"height: 100%; margin-bottom: 0px\">\n" +
+    "            <table class=\"table table-bordered table-fixed weekview-allday-content-table\">\n" +
     "                <tbody>\n" +
     "                <tr>\n" +
     "                    <td ng-repeat=\"day in dates track by day.date\" class=\"calendar-cell\">\n" +
-    "                        <div ng-class=\"{'calendar-event-wrap': day.events}\" ng-if=\"day.events\">\n" +
+    "                        <div ng-class=\"{'calendar-event-wrap': day.events}\" ng-if=\"day.events\"\n" +
+    "                             ng-style=\"{height: 25*day.events.length+'px'}\">\n" +
     "                            <div ng-repeat=\"displayEvent in day.events\" class=\"calendar-event\"\n" +
     "                                 ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
     "                                 ng-style=\"{top: 25*displayEvent.position+'px', width: 100*(displayEvent.endIndex-displayEvent.startIndex)+'%', height: '25px'}\">\n" +
@@ -1150,7 +1155,8 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                            </div>\n" +
     "                        </div>\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"allDayEventGutterWidth>0\" class=\"gutter-column\" ng-style=\"{width: allDayEventGutterWidth+'px'}\"></td>\n" +
+    "                    <td ng-if=\"allDayEventGutterWidth>0\" class=\"gutter-column\"\n" +
+    "                        ng-style=\"{width: allDayEventGutterWidth+'px'}\"></td>\n" +
     "                </tr>\n" +
     "                </tbody>\n" +
     "            </table>\n" +
