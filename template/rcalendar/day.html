@@ -4,17 +4,19 @@
             all day
         </div>
         <div class="dayview-allday-content-wrapper">
-            <table class="table table-bordered" style="height: 100%; margin-bottom: 0">
+            <table class="table table-bordered dayview-allday-content-table">
                 <tbody>
                 <tr>
-                    <td class="calendar-cell" ng-class="{'calendar-event-wrap':allDayEvents}">
+                    <td class="calendar-cell" ng-class="{'calendar-event-wrap':allDayEvents}"
+                        ng-style="{height: 25*allDayEvents.length+'px'}">
                         <div ng-repeat="displayEvent in allDayEvents" class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
                              ng-style="{top: 25*$index+'px',width: '100%',height:'25px'}">
                             <div class="calendar-event-inner">{{displayEvent.event.title}}</div>
                         </div>
                     </td>
-                    <td ng-if="allDayEventGutterWidth>0" class="gutter-column" ng-style="{width:allDayEventGutterWidth+'px'}"></td>
+                    <td ng-if="allDayEventGutterWidth>0" class="gutter-column"
+                        ng-style="{width:allDayEventGutterWidth+'px'}"></td>
                 </tr>
                 </tbody>
             </table>

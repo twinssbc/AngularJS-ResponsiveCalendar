@@ -3,7 +3,9 @@
         <thead>
         <tr>
             <th class="calendar-hour-column"></th>
-            <th ng-repeat="dt in dates" class="text-center weekview-header-label">{{dt.date| date: formatWeekViewDayHeader}}</th>
+            <th ng-repeat="dt in dates" class="text-center weekview-header-label">{{dt.date| date:
+                formatWeekViewDayHeader}}
+            </th>
             <th ng-if="gutterWidth>0" class="gutter-column" ng-style="{width: gutterWidth+'px'}"></th>
         </tr>
         </thead>
@@ -13,11 +15,12 @@
             all day
         </div>
         <div class="weekview-allday-content-wrapper">
-            <table class="table table-bordered table-fixed" style="height: 100%; margin-bottom: 0px">
+            <table class="table table-bordered table-fixed weekview-allday-content-table">
                 <tbody>
                 <tr>
                     <td ng-repeat="day in dates track by day.date" class="calendar-cell">
-                        <div ng-class="{'calendar-event-wrap': day.events}" ng-if="day.events">
+                        <div ng-class="{'calendar-event-wrap': day.events}" ng-if="day.events"
+                             ng-style="{height: 25*day.events.length+'px'}">
                             <div ng-repeat="displayEvent in day.events" class="calendar-event"
                                  ng-click="eventSelected({event:displayEvent.event})"
                                  ng-style="{top: 25*displayEvent.position+'px', width: 100*(displayEvent.endIndex-displayEvent.startIndex)+'%', height: '25px'}">
@@ -25,7 +28,8 @@
                             </div>
                         </div>
                     </td>
-                    <td ng-if="allDayEventGutterWidth>0" class="gutter-column" ng-style="{width: allDayEventGutterWidth+'px'}"></td>
+                    <td ng-if="allDayEventGutterWidth>0" class="gutter-column"
+                        ng-style="{width: allDayEventGutterWidth+'px'}"></td>
                 </tr>
                 </tbody>
             </table>
