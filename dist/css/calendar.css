@@ -144,10 +144,16 @@
         width: 32px;
     }
 
+    .weekview-allday-label, .dayview-allday-label {
+        padding-top: 4px;
+    }
+
     .table > tbody > tr > td.calendar-hour-column, .table > thead > tr > th.weekview-header-label {
         padding-left: 0;
         padding-right: 0;
         font-size: 12px;
+        line-height: 12px;
+        vertical-align: middle;
     }
 
     .weekview-allday-label, .dayview-allday-label {
