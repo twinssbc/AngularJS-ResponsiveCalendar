@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="calendarDemoApp">
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="description" content="AngularJS Responsive Calendar Demo">
+  <title>AngularJS Responsive Calendar Demo</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="../../dist/css/calendar.min.css"/>
+
+  <script src="http://cdn.staticfile.org/angular.js/1.2.10/angular.min.js"></script>
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+  <script src="../../dist/js/calendar-tpls.js"></script>
+  <script src="calendarDemoCtrl.js"></script>
+</head>
+<body>
+
+
+  <!-- Always shows a header, even in smaller screens. -->
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">AngularJS Responsive Calendar</span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation. We hide it in small screens. -->
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+          <a class="mdl-navigation__link" href="https://github.com/twinssbc/AngularJS-ResponsiveCalendar">
+            <img style="display:inline-block" src="github-icon.png"/> View on GitHub</a>
+          </nav>
+        </div>
+      </header>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+
+
+          <section class="content" style="margin-top: 70px;">
+            <section class="container">
+              <section ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">
+                <div class="alert alert-success" ng-show="event">Event selected:{{event.startTime|date:
+                  'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
+                </div>
+
+                <div class="btn-toolbar">
+                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">
+                    Month
+                  </button>
+                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect" ng-class="{active:mode==='week'}" ng-click="changeMode('week')">
+                    Week
+                  </button>
+                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect" ng-class="{active:mode==='day'}" ng-click="changeMode('day')">
+                    Day
+                  </button>
+                  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-disabled="isToday()" ng-click="today()">
+                    Today
+                  </button>
+                </div>
+                <div class="well well-sm">
+                  <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource" template="mdl"
+                  range-changed="reloadSource(startTime, endTime)"
+                  event-selected="onEventSelected(event)"
+                  time-selected="onTimeSelected(selectedTime)"></calendar>
+                </div>
+              </section>
+            </section>
+          </section>
+
+
+        </div>
+      </main>
+    </div>
+
+  </body>
+  </html>

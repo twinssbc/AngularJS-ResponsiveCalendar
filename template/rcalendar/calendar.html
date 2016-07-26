@@ -1,16 +1,40 @@
 <div ng-switch="calendarMode">
-    <div class="row calendar-navbar">
-        <div class="nav-left col-xs-2">
-            <button type="button" class="btn btn-default btn-sm" ng-click="move(-1)"><i
-                    class="glyphicon glyphicon-chevron-left"></i></button>
-        </div>
-        <div class="calendar-header col-xs-8">{{title}}</div>
-        <div class="nav-right col-xs-2">
-            <button type="button" class="btn btn-default btn-sm" ng-click="move(1)"><i
-                    class="glyphicon glyphicon-chevron-right"></i></button>
-        </div>
+  <div ng-if="template == 'mdl'">
+    <div class="mdl-grid calendar-navbar">
+      <div class="nav-left mdl-cell mdl-cell--2-col">
+        <button type="button" class="mdl-button mdl-js-button" ng-click="move(-1)">
+          <i class="material-icons">arrow_back</i>
+        </button>
+      </div>
+      <div class="calendar-header mdl-cell mdl-cell--8-col">{{title}}</div>
+      <div class="nav-right mdl-cell mdl-cell--2-col">
+        <button type="button" class="mdl-button mdl-js-button" ng-click="move(1)">
+          <i class="material-icons">arrow_forward</i>
+        </button>
+      </div>
     </div>
-    <dayview ng-switch-when="day"></dayview>
-    <monthview ng-switch-when="month"></monthview>
-    <weekview ng-switch-when="week"></weekview>
+
+    <monthview-mdl ng-switch-when="month"></monthview-mdl>
+    <dayview-mdl ng-switch-when="day"></dayview-mdl>
+    <weekview-mdl ng-switch-when="week"></weekview-mdl>
+  </div>
+  <div ng-if="template == 'bootstrap'">
+    <div class="row calendar-navbar">
+      <div class="nav-left col-xs-2">
+        <button type="button" class="btn btn-default btn-sm" ng-click="move(-1)">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+        </button>
+      </div>
+      <div class="calendar-header col-xs-8">{{title}}</div>
+      <div class="nav-right col-xs-2">
+        <button type="button" class="btn btn-default btn-sm" ng-click="move(1)">
+          <i class="glyphicon glyphicon-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <dayview-bootstrap ng-switch-when="day"></dayview-bootstrap>
+    <monthview-bootstrap ng-switch-when="month"></monthview-bootstrap>
+    <weekview-bootstrap ng-switch-when="week"></weekview-bootstrap>
+  </div>
 </div>

@@ -1,0 +1,50 @@
+<div>
+    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp table-fixed monthview-datetable full-table">
+        <thead>
+        <tr>
+            <th ng-show="showWeeks" class="calendar-week-column mdl-typography--text-center">#</th>
+            <th ng-repeat="label in labels track by $index" class="mdl-typography--text-center">
+                <small>{{label}}</small>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in rows track by $index">
+            <td ng-show="showWeeks" class="calendar-week-column mdl-typography--text-center">
+                <small><em>{{ weekNumbers[$index] }}</em></small>
+            </td>
+            <td ng-repeat="dt in row track by dt.date" class="monthview-dateCell" ng-click="select(dt.date)"
+                ng-class="{'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
+                <div ng-class="{'mdl-typography--text-center': true, 'text-muted':dt.secondary}">
+                    {{dt.label}}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-if="showEventDetail" class="event-detail-container">
+        <div class="scrollable" style="height: 200px">
+          <ul class="demo-list-item mdl-list">
+            <li ng-if="!selectedDate.events">
+              <span class="no-event-label">No Events</span>
+            </li>
+            <li class="mdl-list__item mdl-list__item--two-line" ng-repeat="event in selectedDate.events" ng-if="selectedDate.events"  ng-click="eventSelected({event:event})">
+              <span class="mdl-list__item-primary-content" class="monthview-eventdetail">
+                <span>
+                  {{event.title}}
+                </span>
+                <span class="mdl-list__item-sub-title" ng-if="!event.allDay">
+                  {{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}
+                </span>
+                <span class="mdl-list__item-sub-title" ng-if="event.allDay">
+                  All day
+                </span>
+              </span>
+              <span class="mdl-list__item-secondary-action">
+                <i class="material-icons">keyboard_arrow_right</i>
+              </span>
+            </li>
+          </ul>
+        </div>
+    </div>
+</div>

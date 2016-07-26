@@ -120,6 +120,10 @@
     margin-bottom: 0;
 }
 
+.full-table{
+  width: 100%;
+}
+
 .weekview-header th {
     overflow: hidden;
     white-space: nowrap;
@@ -168,4 +172,3 @@
         font-size: 12px;
     }
 }
-
