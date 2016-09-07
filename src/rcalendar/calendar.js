@@ -1069,6 +1069,7 @@ angular.module('ui.rCalendar', [])
                   var startingDate = ctrl.range.startTime;
 
                   scope.rows = createDateObjects(startingDate);
+                  console.log(scope.rows);
                   scope.allDayEvents = [];
                   scope.dates = [startingDate];
                   scope.$parent.title = dateFilter(startingDate, ctrl.formatDayTitle);

@@ -61,10 +61,12 @@
     overflow: hidden;
     background-color: #3a87ad;
     color: white;
-    height: 100%;
-    width: 100%;
+    height: 98%;
+    width: 98%;
     padding: 2px;
     line-height: 15px;
+    margin-top: 1%;
+    margin-left: 1%;
 }
 
 .calendar-cell {
@@ -105,7 +107,6 @@
     line-height: 50px;
     text-align: center;
     width: 50px;
-    border: 1px solid #ddd;
     border-right-width: 0;
 }
 
