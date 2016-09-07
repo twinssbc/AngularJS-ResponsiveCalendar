@@ -38,12 +38,15 @@
 
           <section class="content" style="margin-top: 70px;">
             <section class="container">
-              <section ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">
+              <section ng-controller="CalendarDemoCtrl">
                 <div class="alert alert-success" ng-show="event">Event selected:{{event.startTime|date:
                   'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
                 </div>
 
                 <div class="btn-toolbar">
+                  <button class="mdl-button mdl-js-button mdl-js-ripple-effect" ng-click="loadEvents()">
+                    ADD
+                  </button>
                   <button class="mdl-button mdl-js-button mdl-js-ripple-effect" ng-class="{active:mode==='month'}" ng-click="changeMode('month')">
                     Month
                   </button>
