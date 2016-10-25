@@ -428,18 +428,31 @@ angular.module('ui.rCalendar', [])
                             }
                         }
 
+                        var timeDiff;
                         var timeDifferenceStart;
                         if (eventStartTime <= st) {
                             timeDifferenceStart = 0;
                         } else {
-                            timeDifferenceStart = (eventStartTime - st) / oneDay;
+                            timeDiff = eventStartTime - st;
+                            if(!event.allDay) {
+                                timeDiff = timeDiff - (eventStartTime.getTimezoneOffset() - st.getTimezoneOffset()) * 60000;
+                            }
+                            timeDifferenceStart = timeDiff / oneDay;
                         }
 
                         var timeDifferenceEnd;
                         if (eventEndTime >= et) {
-                            timeDifferenceEnd = (et - st) / oneDay;
+                            timeDiff = et - st;
+                            if(!event.allDay) {
+                                timeDiff = timeDiff - (et.getTimezoneOffset() - st.getTimezoneOffset()) * 60000;
+                            }
+                            timeDifferenceEnd = timeDiff / oneDay;
                         } else {
-                            timeDifferenceEnd = (eventEndTime - st) / oneDay;
+                            timeDiff = eventEndTime - st;
+                            if(!event.allDay) {
+                                timeDiff = timeDiff - (eventEndTime.getTimezoneOffset() - st.getTimezoneOffset()) * 60000;
+                            }
+                            timeDifferenceEnd = timeDiff / oneDay;
                         }
 
                         var index = Math.floor(timeDifferenceStart);
@@ -692,18 +705,22 @@ angular.module('ui.rCalendar', [])
                             } else {
                                 normalEventInRange = true;
 
+                                var timeDiff;
                                 var timeDifferenceStart;
                                 if (eventStartTime <= startTime) {
                                     timeDifferenceStart = 0;
                                 } else {
-                                    timeDifferenceStart = (eventStartTime - startTime) / oneHour;
+                                    timeDiff = eventStartTime - startTime - (eventStartTime.getTimezoneOffset() - startTime.getTimezoneOffset()) * 60000;
+                                    timeDifferenceStart = timeDiff / oneHour;
                                 }
 
                                 var timeDifferenceEnd;
                                 if (eventEndTime >= endTime) {
-                                    timeDifferenceEnd = (endTime - startTime) / oneHour;
+                                    timeDiff = endTime - startTime - (endTime.getTimezoneOffset() - startTime.getTimezoneOffset()) * 60000;
+                                    timeDifferenceEnd = timeDiff / oneHour;
                                 } else {
-                                    timeDifferenceEnd = (eventEndTime - startTime) / oneHour;
+                                    timeDiff = eventEndTime - startTime - (eventEndTime.getTimezoneOffset() - startTime.getTimezoneOffset()) * 60000;
+                                    timeDifferenceEnd = timeDiff / oneHour;
                                 }
 
                                 var startIndex = Math.floor(timeDifferenceStart);
@@ -925,18 +942,22 @@ angular.module('ui.rCalendar', [])
                                 normalEventInRange = true;
                             }
 
+                            var timeDiff;
                             var timeDifferenceStart;
                             if (eventStartTime <= startTime) {
                                 timeDifferenceStart = 0;
                             } else {
-                                timeDifferenceStart = (eventStartTime - startTime) / oneHour;
+                                timeDiff = eventStartTime - startTime - (eventStartTime.getTimezoneOffset() - startTime.getTimezoneOffset()) * 60000;
+                                timeDifferenceStart = timeDiff / oneHour;
                             }
 
                             var timeDifferenceEnd;
                             if (eventEndTime >= endTime) {
-                                timeDifferenceEnd = (endTime - startTime) / oneHour;
+                                timeDiff = endTime - startTime - (endTime.getTimezoneOffset() - startTime.getTimezoneOffset()) * 60000;
+                                timeDifferenceEnd = timeDiff / oneHour;
                             } else {
-                                timeDifferenceEnd = (eventEndTime - startTime) / oneHour;
+                                timeDiff = eventEndTime - startTime - (eventEndTime.getTimezoneOffset() - startTime.getTimezoneOffset()) * 60000;
+                                timeDifferenceEnd = timeDiff / oneHour;
                             }
 
                             var startIndex = Math.floor(timeDifferenceStart);
