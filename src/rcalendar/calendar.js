@@ -12,7 +12,9 @@ angular.module('ui.rCalendar', [])
         showEventDetail: true,
         startingDay: 0,
         eventSource: null,
-        queryMode: 'local'
+        queryMode: 'local',
+        weekDisplayAllDaySlot : true,
+        dayDisplayAllDaySlot : true
     })
     .controller('ui.rCalendar.CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
         'use strict';
@@ -21,7 +23,7 @@ angular.module('ui.rCalendar', [])
 
         // Configuration attributes
         angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle', 'formatWeekViewDayHeader', 'formatHourColumn',
-            'showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode'], function (key, index) {
+            'showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode', 'weekDisplayAllDaySlot','dayDisplayAllDaySlot'], function (key, index) {
             self[key] = angular.isDefined($attrs[key]) ? (index < 7 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
 
@@ -546,6 +548,7 @@ angular.module('ui.rCalendar', [])
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 scope.formatWeekViewDayHeader = ctrl.formatWeekViewDayHeader;
+                scope.displayAllDay = ctrl.weekDisplayAllDaySlot;
                 scope.formatHourColumn = ctrl.formatHourColumn;
 
                 $timeout(function () {
@@ -844,6 +847,7 @@ angular.module('ui.rCalendar', [])
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 scope.formatHourColumn = ctrl.formatHourColumn;
+                scope.displayAllDay = ctrl.dayDisplayAllDaySlot;
 
                 $timeout(function () {
                     updateScrollGutter();

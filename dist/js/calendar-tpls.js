@@ -13,7 +13,9 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         showEventDetail: true,
         startingDay: 0,
         eventSource: null,
-        queryMode: 'local'
+        queryMode: 'local',
+        weekDisplayAllDaySlot : true,
+        dayDisplayAllDaySlot : true
     })
     .controller('ui.rCalendar.CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
         'use strict';
@@ -22,7 +24,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
         // Configuration attributes
         angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle', 'formatWeekViewDayHeader', 'formatHourColumn',
-            'showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode'], function (key, index) {
+            'showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode', 'weekDisplayAllDaySlot','dayDisplayAllDaySlot'], function (key, index) {
             self[key] = angular.isDefined($attrs[key]) ? (index < 7 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
 
@@ -547,6 +549,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 scope.formatWeekViewDayHeader = ctrl.formatWeekViewDayHeader;
+                scope.displayAllDay = ctrl.weekDisplayAllDaySlot;
                 scope.formatHourColumn = ctrl.formatHourColumn;
 
                 $timeout(function () {
@@ -845,6 +848,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 scope.formatHourColumn = ctrl.formatHourColumn;
+                scope.displayAllDay = ctrl.dayDisplayAllDaySlot;
 
                 $timeout(function () {
                     updateScrollGutter();
@@ -1027,7 +1031,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             }
         };
     }]);
-angular.module("template/rcalendar/calendar.html", []).run(["$templateCache", function($templateCache) {
+
+angular.module("template/rcalendar/calendar.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("template/rcalendar/calendar.html",
     "<div ng-switch=\"calendarMode\">\n" +
     "    <div class=\"row calendar-navbar\">\n" +
@@ -1048,10 +1053,10 @@ angular.module("template/rcalendar/calendar.html", []).run(["$templateCache", fu
     "");
 }]);
 
-angular.module("template/rcalendar/day.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/rcalendar/day.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("template/rcalendar/day.html",
     "<div>\n" +
-    "    <div class=\"dayview-allday-table\">\n" +
+    "    <div class=\"dayview-allday-table\" ng-show=\"displayAllDay\">\n" +
     "        <div class=\"dayview-allday-label\">\n" +
     "            all day\n" +
     "        </div>\n" +
@@ -1094,10 +1099,11 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "            </tbody>\n" +
     "        </table>\n" +
     "    </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
-angular.module("template/rcalendar/month.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/rcalendar/month.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("template/rcalendar/month.html",
     "<div>\n" +
     "    <table class=\"table table-bordered table-fixed monthview-datetable monthview-datetable\">\n" +
@@ -1141,7 +1147,7 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "</div>");
 }]);
 
-angular.module("template/rcalendar/week.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/rcalendar/week.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("template/rcalendar/week.html",
     "<div>\n" +
     "    <table class=\"table table-bordered table-fixed weekview-header\">\n" +
@@ -1155,7 +1161,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "        </tr>\n" +
     "        </thead>\n" +
     "    </table>\n" +
-    "    <div class=\"weekview-allday-table\">\n" +
+    "    <div class=\"weekview-allday-table\" ng-show=\"displayAllDay\">\n" +
     "        <div class=\"weekview-allday-label\">\n" +
     "            all day\n" +
     "        </div>\n" +
@@ -1201,5 +1207,6 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "            </tbody>\n" +
     "        </table>\n" +
     "    </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
