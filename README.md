@@ -83,8 +83,8 @@ The callback function triggered when the range or mode is changed if the queryMo
 The callback function triggered when an event is clicked
 
         <calendar ... event-selected="onEventSelected(event)"></calendar>
-    
-    
+
+
         $scope.onEventSelected = function (event) {
             console.log(event.title);
         };
@@ -93,11 +93,14 @@ The callback function triggered when an event is clicked
 The callback function triggered when a date or time is selected
 
         <calendar ... time-selected="onTimeSelected(selectedTime)"></calendar>
-        
+
         $scope.onTimeSelected = function (selectedTime) {
             console.log(event.selectedTime);
         };
 
+* translations
+An object with your translations.
+Default value: `{ noEvents: 'No Events'}'`
 
 # EventSource
 

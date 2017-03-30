@@ -13,7 +13,10 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         showEventDetail: true,
         startingDay: 0,
         eventSource: null,
-        queryMode: 'local'
+        queryMode: 'local',
+        translations: {
+            noEvents: 'No Events'
+        }
     })
     .controller('ui.rCalendar.CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
         'use strict';
@@ -31,6 +34,9 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         });
 
         $scope.calendarMode = $scope.calendarMode || calendarConfig.calendarMode;
+
+        $scope.translations = $scope.translations || calendarConfig.translations;
+
         if (angular.isDefined($attrs.initDate)) {
             self.currentCalendarDate = $scope.$parent.$eval($attrs.initDate);
         }
@@ -240,7 +246,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                 calendarMode: '=',
                 rangeChanged: '&',
                 eventSelected: '&',
-                timeSelected: '&'
+                timeSelected: '&',
+                translations: '='
             },
             require: ['calendar', '?^ngModel'],
             controller: 'ui.rCalendar.CalendarController',
@@ -271,6 +278,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             link: function (scope, element, attrs, ctrls) {
                 var ctrl = ctrls[0],
                     ngModelCtrl = ctrls[1];
+
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
 
@@ -1027,6 +1035,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             }
         };
     }]);
+
 angular.module("template/rcalendar/calendar.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/rcalendar/calendar.html",
     "<div ng-switch=\"calendarMode\">\n" +
@@ -1134,11 +1143,12 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">All day</td>\n" +
     "                    <td class=\"event-detail\" ng-click=\"eventSelected({event:event})\">{{event.title}}</td>\n" +
     "                </tr>\n" +
-    "                <tr ng-if=\"!selectedDate.events\"><td class=\"no-event-label\">No Events</td></tr>\n" +
+    "                <tr ng-if=\"!selectedDate.events\"><td class=\"no-event-label\">{{translations.noEvents}}</td></tr>\n" +
     "            </table>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("template/rcalendar/week.html", []).run(["$templateCache", function($templateCache) {
