@@ -12,7 +12,10 @@ angular.module('ui.rCalendar', [])
         showEventDetail: true,
         startingDay: 0,
         eventSource: null,
-        queryMode: 'local'
+        queryMode: 'local',
+        translations: {
+            noEvents: 'No Events'
+        }
     })
     .controller('ui.rCalendar.CalendarController', ['$scope', '$attrs', '$parse', '$interpolate', '$log', 'dateFilter', 'calendarConfig', function ($scope, $attrs, $parse, $interpolate, $log, dateFilter, calendarConfig) {
         'use strict';
@@ -30,6 +33,9 @@ angular.module('ui.rCalendar', [])
         });
 
         $scope.calendarMode = $scope.calendarMode || calendarConfig.calendarMode;
+
+        $scope.translations = $scope.translations || calendarConfig.translations;
+
         if (angular.isDefined($attrs.initDate)) {
             self.currentCalendarDate = $scope.$parent.$eval($attrs.initDate);
         }
@@ -239,7 +245,8 @@ angular.module('ui.rCalendar', [])
                 calendarMode: '=',
                 rangeChanged: '&',
                 eventSelected: '&',
-                timeSelected: '&'
+                timeSelected: '&',
+                translations: '='
             },
             require: ['calendar', '?^ngModel'],
             controller: 'ui.rCalendar.CalendarController',
@@ -270,6 +277,7 @@ angular.module('ui.rCalendar', [])
             link: function (scope, element, attrs, ctrls) {
                 var ctrl = ctrls[0],
                     ngModelCtrl = ctrls[1];
+
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
 
