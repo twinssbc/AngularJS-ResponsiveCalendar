@@ -27,8 +27,8 @@ angular.module('calendarDemoApp').controller('CalendarDemoCtrl', ['$scope', func
         $scope.event = event;
     };
 
-    $scope.onTimeSelected = function (selectedTime) {
-        console.log('Selected time: ' + selectedTime);
+    $scope.onTimeSelected = function (selectedTime, events) {
+        console.log('Selected time: ' + selectedTime + ' hasEvents: ' + (events !== undefined && events.length !== 0));
     };
 
     function createRandomEvents() {

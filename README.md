@@ -61,6 +61,12 @@ Default value: true
 * startingDay    
 Control month view starting from which day.    
 Default value: 0
+* allDayLabel    
+The text displayed in the allDay column header.    
+Default value: 'all day'
+* noEventsLabel    
+The text displayed when there’s no event on the selected date in month view.    
+Default value: 'No Events'
 * eventSource    
 The data source of the calendar, when the eventSource is set, the view will be updated accordingly.    
 Default value: null    
@@ -89,13 +95,13 @@ The callback function triggered when an event is clicked
             console.log(event.title);
         };
 
-* timeSelected
+* timeSelected    
 The callback function triggered when a date or time is selected
 
-        <calendar ... time-selected="onTimeSelected(selectedTime)"></calendar>
+        <calendar ... time-selected="onTimeSelected(selectedTime, events)"></calendar>
         
-        $scope.onTimeSelected = function (selectedTime) {
-            console.log(event.selectedTime);
+        $scope.onTimeSelected = function (selectedTime, events) {
+			console.log('Selected time: ' + selectedTime + ' hasEvents: ' + (events !== undefined && events.length !== 0));
         };
 
 

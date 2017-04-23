@@ -11,6 +11,8 @@ angular.module('ui.rCalendar', [])
         showWeeks: false,
         showEventDetail: true,
         startingDay: 0,
+        allDayLabel: 'all day',
+        noEventsLabel: 'No Events',
         eventSource: null,
         queryMode: 'local'
     })
@@ -21,8 +23,12 @@ angular.module('ui.rCalendar', [])
 
         // Configuration attributes
         angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle', 'formatWeekViewDayHeader', 'formatHourColumn',
-            'showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode'], function (key, index) {
-            self[key] = angular.isDefined($attrs[key]) ? (index < 7 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
+             'allDayLabel', 'noEventsLabel'], function (key, index) {
+            self[key] = angular.isDefined($attrs[key]) ? $interpolate($attrs[key])($scope.$parent) : calendarConfig[key];
+        });
+
+        angular.forEach(['showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode'], function (key, index) {
+            self[key] = angular.isDefined($attrs[key]) ? ($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
 
         $scope.$parent.$watch($attrs.eventSource, function (value) {
@@ -272,6 +278,8 @@ angular.module('ui.rCalendar', [])
                     ngModelCtrl = ctrls[1];
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
+                scope.noEventsLabel = ctrl.noEventsLabel;
+                scope.allDayLabel = ctrl.allDayLabel;
 
                 ctrl.mode = {
                     step: {months: 1}
@@ -287,8 +295,10 @@ angular.module('ui.rCalendar', [])
                     return dates;
                 }
 
-                scope.select = function (selectedDate) {
+                scope.select = function (viewDate) {
                     var rows = scope.rows;
+                    var selectedDate = viewDate.date;
+                    var events = viewDate.events;
                     if (rows) {
                         var currentCalendarDate = ctrl.currentCalendarDate;
                         var currentMonth = currentCalendarDate.getMonth();
@@ -323,7 +333,10 @@ angular.module('ui.rCalendar', [])
                         }
 
                         if (scope.timeSelected) {
-                            scope.timeSelected({selectedTime: selectedDate});
+                            scope.timeSelected({
+                                selectedTime: selectedDate,
+                                events: events
+                            });
                         }
                     }
                 };
@@ -547,6 +560,7 @@ angular.module('ui.rCalendar', [])
             link: function (scope, element, attrs, ctrl) {
                 scope.formatWeekViewDayHeader = ctrl.formatWeekViewDayHeader;
                 scope.formatHourColumn = ctrl.formatHourColumn;
+                scope.allDayLabel = ctrl.allDayLabel;
 
                 $timeout(function () {
                     updateScrollGutter();
@@ -614,9 +628,12 @@ angular.module('ui.rCalendar', [])
                     return times;
                 }
 
-                scope.select = function (selectedTime) {
+                scope.select = function (selectedTime, events) {
                     if (scope.timeSelected) {
-                        scope.timeSelected({selectedTime: selectedTime});
+                        scope.timeSelected({
+                            selectedTime: selectedTime,
+                            events: events
+                        });
                     }
                 };
 
@@ -844,6 +861,7 @@ angular.module('ui.rCalendar', [])
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 scope.formatHourColumn = ctrl.formatHourColumn;
+                scope.allDayLabel = ctrl.allDayLabel;
 
                 $timeout(function () {
                     updateScrollGutter();
@@ -892,9 +910,12 @@ angular.module('ui.rCalendar', [])
 
                 }
 
-                scope.select = function (selectedTime) {
+                scope.select = function (selectedTime, events) {
                     if (scope.timeSelected) {
-                        scope.timeSelected({selectedTime: selectedTime});
+                        scope.timeSelected({
+                            selectedTime: selectedTime,
+                            events: events
+                        });
                     }
                 };
 

@@ -12,6 +12,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
         showWeeks: false,
         showEventDetail: true,
         startingDay: 0,
+        allDayLabel: 'all day',
+        noEventsLabel: 'No Events',
         eventSource: null,
         queryMode: 'local'
     })
@@ -22,8 +24,12 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
         // Configuration attributes
         angular.forEach(['formatDay', 'formatDayHeader', 'formatDayTitle', 'formatWeekTitle', 'formatMonthTitle', 'formatWeekViewDayHeader', 'formatHourColumn',
-            'showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode'], function (key, index) {
-            self[key] = angular.isDefined($attrs[key]) ? (index < 7 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : calendarConfig[key];
+             'allDayLabel', 'noEventsLabel'], function (key, index) {
+            self[key] = angular.isDefined($attrs[key]) ? $interpolate($attrs[key])($scope.$parent) : calendarConfig[key];
+        });
+
+        angular.forEach(['showWeeks', 'showEventDetail', 'startingDay', 'eventSource', 'queryMode'], function (key, index) {
+            self[key] = angular.isDefined($attrs[key]) ? ($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
 
         $scope.$parent.$watch($attrs.eventSource, function (value) {
@@ -273,6 +279,8 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     ngModelCtrl = ctrls[1];
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
+                scope.noEventsLabel = ctrl.noEventsLabel;
+                scope.allDayLabel = ctrl.allDayLabel;
 
                 ctrl.mode = {
                     step: {months: 1}
@@ -288,8 +296,10 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     return dates;
                 }
 
-                scope.select = function (selectedDate) {
+                scope.select = function (viewDate) {
                     var rows = scope.rows;
+                    var selectedDate = viewDate.date;
+                    var events = viewDate.events;
                     if (rows) {
                         var currentCalendarDate = ctrl.currentCalendarDate;
                         var currentMonth = currentCalendarDate.getMonth();
@@ -324,7 +334,10 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                         }
 
                         if (scope.timeSelected) {
-                            scope.timeSelected({selectedTime: selectedDate});
+                            scope.timeSelected({
+                                selectedTime: selectedDate,
+                                events: events
+                            });
                         }
                     }
                 };
@@ -548,6 +561,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             link: function (scope, element, attrs, ctrl) {
                 scope.formatWeekViewDayHeader = ctrl.formatWeekViewDayHeader;
                 scope.formatHourColumn = ctrl.formatHourColumn;
+                scope.allDayLabel = ctrl.allDayLabel;
 
                 $timeout(function () {
                     updateScrollGutter();
@@ -615,9 +629,12 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
                     return times;
                 }
 
-                scope.select = function (selectedTime) {
+                scope.select = function (selectedTime, events) {
                     if (scope.timeSelected) {
-                        scope.timeSelected({selectedTime: selectedTime});
+                        scope.timeSelected({
+                            selectedTime: selectedTime,
+                            events: events
+                        });
                     }
                 };
 
@@ -845,6 +862,7 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
             require: '^calendar',
             link: function (scope, element, attrs, ctrl) {
                 scope.formatHourColumn = ctrl.formatHourColumn;
+                scope.allDayLabel = ctrl.allDayLabel;
 
                 $timeout(function () {
                     updateScrollGutter();
@@ -893,9 +911,12 @@ angular.module('ui.rCalendar', ['ui.rCalendar.tpls'])
 
                 }
 
-                scope.select = function (selectedTime) {
+                scope.select = function (selectedTime, events) {
                     if (scope.timeSelected) {
-                        scope.timeSelected({selectedTime: selectedTime});
+                        scope.timeSelected({
+                            selectedTime: selectedTime,
+                            events: events
+                        });
                     }
                 };
 
@@ -1053,7 +1074,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "<div>\n" +
     "    <div class=\"dayview-allday-table\">\n" +
     "        <div class=\"dayview-allday-label\">\n" +
-    "            all day\n" +
+    "            {{allDayLabel}}\n" +
     "        </div>\n" +
     "        <div class=\"dayview-allday-content-wrapper\">\n" +
     "            <table class=\"table table-bordered dayview-allday-content-table\">\n" +
@@ -1081,7 +1102,7 @@ angular.module("template/rcalendar/day.html", []).run(["$templateCache", functio
     "                <td class=\"calendar-hour-column text-center\">\n" +
     "                    {{tm.time | date: formatHourColumn}}\n" +
     "                </td>\n" +
-    "                <td class=\"calendar-cell\" ng-click=\"select(tm.time)\">\n" +
+    "                <td class=\"calendar-cell\" ng-click=\"select(tm.time, tm.events)\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +
     "                        <div ng-repeat=\"displayEvent in tm.events\" class=\"calendar-event\"\n" +
     "                             ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
@@ -1114,7 +1135,7 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "            <td ng-show=\"showWeeks\" class=\"calendar-week-column text-center\">\n" +
     "                <small><em>{{ weekNumbers[$index] }}</em></small>\n" +
     "            </td>\n" +
-    "            <td ng-repeat=\"dt in row track by dt.date\" class=\"monthview-dateCell\" ng-click=\"select(dt.date)\"\n" +
+    "            <td ng-repeat=\"dt in row track by dt.date\" class=\"monthview-dateCell\" ng-click=\"select(dt)\"\n" +
     "                ng-class=\"{'text-center':true, 'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}\">\n" +
     "                <div ng-class=\"{'text-muted':dt.secondary}\">\n" +
     "                    {{dt.label}}\n" +
@@ -1131,10 +1152,10 @@ angular.module("template/rcalendar/month.html", []).run(["$templateCache", funct
     "                        -\n" +
     "                        {{event.endTime|date: 'HH:mm'}}\n" +
     "                    </td>\n" +
-    "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">All day</td>\n" +
+    "                    <td ng-if=\"event.allDay\" class=\"monthview-eventdetail-timecolumn\">{{allDayLabel}}</td>\n" +
     "                    <td class=\"event-detail\" ng-click=\"eventSelected({event:event})\">{{event.title}}</td>\n" +
     "                </tr>\n" +
-    "                <tr ng-if=\"!selectedDate.events\"><td class=\"no-event-label\">No Events</td></tr>\n" +
+    "                <tr ng-if=\"!selectedDate.events\"><td class=\"no-event-label\">{{noEventsLabel}}</td></tr>\n" +
     "            </table>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -1157,7 +1178,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "    </table>\n" +
     "    <div class=\"weekview-allday-table\">\n" +
     "        <div class=\"weekview-allday-label\">\n" +
-    "            all day\n" +
+    "            {{allDayLabel}}\n" +
     "        </div>\n" +
     "        <div class=\"weekview-allday-content-wrapper\">\n" +
     "            <table class=\"table table-bordered table-fixed weekview-allday-content-table\">\n" +
@@ -1187,7 +1208,7 @@ angular.module("template/rcalendar/week.html", []).run(["$templateCache", functi
     "                <td class=\"calendar-hour-column text-center\">\n" +
     "                    {{row[0].time | date: formatHourColumn}}\n" +
     "                </td>\n" +
-    "                <td ng-repeat=\"tm in row track by tm.time\" class=\"calendar-cell\" ng-click=\"select(tm.time)\">\n" +
+    "                <td ng-repeat=\"tm in row track by tm.time\" class=\"calendar-cell\" ng-click=\"select(tm.time, tm.events)\">\n" +
     "                    <div ng-class=\"{'calendar-event-wrap': tm.events}\" ng-if=\"tm.events\">\n" +
     "                        <div ng-repeat=\"displayEvent in tm.events\" class=\"calendar-event\"\n" +
     "                             ng-click=\"eventSelected({event:displayEvent.event})\"\n" +
