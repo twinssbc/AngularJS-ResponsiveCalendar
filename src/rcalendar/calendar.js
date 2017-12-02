@@ -152,7 +152,7 @@ angular.module('ui.rCalendar', [])
             if (earlyEvent.endIndex <= lateEvent.startIndex) {
                 return false;
             } else {
-                return !(earlyEvent.endIndex - lateEvent.startIndex === 1 && earlyEvent.endOffset + lateEvent.startOffset > self.hourParts);
+                return !(earlyEvent.endIndex - lateEvent.startIndex === 1 && earlyEvent.endOffset + lateEvent.startOffset >= self.hourParts);
             }
         }
 
@@ -560,12 +560,11 @@ angular.module('ui.rCalendar', [])
                 };
 
                 function getISO8601WeekNumber(date) {
-                    var checkDate = new Date(date);
-                    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
-                    var time = checkDate.getTime();
-                    checkDate.setMonth(0); // Compare with Jan 1
-                    checkDate.setDate(1);
-                    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+                    var dayOfWeekOnFirst = (new Date(date.getFullYear(), 0, 1)).getDay();
+                    var firstThurs = new Date(date.getFullYear(), 0, ((dayOfWeekOnFirst <= 4) ? 5 : 12) - dayOfWeekOnFirst);
+                    var thisThurs = new Date(date.getFullYear(), date.getMonth(), date.getDate() + (4 - date.getDay()));
+                    var diff = thisThurs - firstThurs;
+                    return (1 + Math.round(diff / 6.048e8)); // 6.048e8 ms per week
                 }
 
                 ctrl.refreshView();
